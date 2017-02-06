@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<div class="low_q">
+<form action="/open_form">
+<select name="selected_form">
+    {% for element in TABLES %}
+        <option value="{{ element }}">{{ element }}</option>
+    {% endfor %}
+</select>
+<input type="submit" value="Отправить">
+</form>
+</div>
+</body>
+</html>

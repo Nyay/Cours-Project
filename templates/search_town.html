@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div class="low_q">
+<form action="/search_town_result">
+<select name="town">
+    {% for element in info %}
+        <option value="{{ element }}">{{ element }}</option>
+    {% endfor %}
+</select>
+<input type="submit" value="Отправить">
+</form>
+</div>
+</body>
+</html>

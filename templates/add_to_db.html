@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+    {% for name, url in urls.items() %}
+    <a href="{{ url }}">{{ name }}</a>
+    {% endfor %}
+</body>
+</html>

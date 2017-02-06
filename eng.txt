@@ -1,0 +1,6 @@
+What’s your name?
+Where are you from?
+What are your hobbies?
+What’s your job?
+What sports do you like?
+How old are you?
