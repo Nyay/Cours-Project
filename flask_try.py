@@ -211,7 +211,10 @@ def main_page_task():
               'Поиск по городу рс-нта': url_for('search_town'),
               'Поиск по полу': url_for('search_gender'),
               }
-    return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4)
+    urls_5 = {'Экспорт ответов': url_for('convert_to_csv'),
+
+    }
+    return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 
 @app.route('/ch_wh_to_add')
@@ -396,7 +399,7 @@ def add_cors_fin():
 @app.route('/convert_to_csv')
 def convert_to_csv():
     export_to_csv('ANS_DB.db')
-    render_template('')
+    render_template('convert_to_csv.html')
 
 
 if __name__ == '__main__':
