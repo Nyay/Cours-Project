@@ -3,6 +3,7 @@ from flask import url_for, render_template, request
 import sqlite3
 import os
 import random
+import csv
 
 
 app = Flask(__name__)
@@ -148,6 +149,8 @@ def search_task(db, table, uprise):
     conn.close()
     return search_result
 
+#
+
 def search_task_where(db, table, uprise, what_in):
     search_result = []
     conn = sqlite3.connect(db)
@@ -162,6 +165,7 @@ def search_task_where(db, table, uprise, what_in):
     conn.close()
     return search_result
 
+#
 
 def search_what_by_arg(what, db, table, wtf, arg):
     search_result = []
@@ -176,6 +180,20 @@ def search_what_by_arg(what, db, table, wtf, arg):
             search_result.append(el)
     conn.close()
     return search_result
+
+#
+
+def export_to_csv(db):
+    with sqlite3.connect(db) as connection:
+        csvWriter = csv.writer(open("output.csv", "w"),  delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        c = connection.cursor()
+        CMD = 'SELECT * FROM ALL_ANS'
+        c.execute(CMD)
+        rows = c.fetchall()
+        csvWriter.writerow(['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента'])
+        csvWriter.writerows(rows)
+
+# Экспорт результатов в CSV файл.
 
 
 @app.route('/')
@@ -373,6 +391,12 @@ def add_cors_fin():
     raw1 = "'" + str(name) + "','" + str(year) + "','" + str(town) + "','" + str(gender) + "'"
     raw2 = 'name, year, town, gender'
     add_info_to_db('cors_info.db', 'cors_info', raw2, str(raw1))
+
+
+@app.route('/convert_to_csv')
+def convert_to_csv():
+    export_to_csv('ANS_DB.db')
+    render_template('')
 
 
 if __name__ == '__main__':
