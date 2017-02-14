@@ -161,7 +161,7 @@ def search_task_where(db, table, uprise, what_in):
     for element in search_taple:
         for el in element:
             search_result.append(el)
-    print(search_result)
+    #print(search_result)
     conn.close()
     return search_result
 
@@ -183,11 +183,11 @@ def search_what_by_arg(what, db, table, wtf, arg):
 
 #
 
-def export_to_csv(db):
+def export_to_csv(db, table, csv_name):
     with sqlite3.connect(db) as connection:
-        csvWriter = csv.writer(open("output.csv", "w"),  delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
+        csvWriter = csv.writer(open(csv_name, "w"),  delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         c = connection.cursor()
-        CMD = 'SELECT * FROM ALL_ANS'
+        CMD = 'SELECT * FROM ' + str(table)
         c.execute(CMD)
         rows = c.fetchall()
         csvWriter.writerow(['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента'])
@@ -195,6 +195,11 @@ def export_to_csv(db):
 
 # Экспорт результатов в CSV файл.
 
+
+def group(iterable, count):
+    return zip(*[iter(iterable)] * count)
+
+# Разбиение чего-то по count элементов
 
 @app.route('/')
 def main_page_task():
@@ -211,7 +216,9 @@ def main_page_task():
               'Поиск по городу рс-нта': url_for('search_town'),
               'Поиск по полу': url_for('search_gender'),
               }
-    urls_5 = {'Экспорт ответов': url_for('convert_to_csv'),
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
 
     }
     return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
@@ -234,8 +241,8 @@ def add_to_db():
     BLOCK_NAME = request.args['block_name']
     QUESTION_TEXT = open_file_read(FILE_NAME)
     QUESTION_TEXT = QUESTION_TEXT.split('\n')
-    create_table_qs('List_of_qs_try')
-    insert_task_qs(QUESTION_TEXT, 'List_of_qs_try', BLOCK_NAME)
+    create_table_qs('List_of_qs')
+    insert_task_qs(QUESTION_TEXT, 'List_of_qs', BLOCK_NAME)
     urls = {'Добавить еще один блок вопросов.': url_for('add_info'),
             }
     return render_template('add_to_db.html', urls=urls)
@@ -254,7 +261,7 @@ def crt_form_fnl():
     FORM_NAME = request.args['form_name']
     BLOCK_NAME = request.args['block_name']
     List_of_QS = []
-    Comand = 'SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_BLOCK = ' + "'" + str(BLOCK_NAME) + "'"
+    Comand = 'SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs WHERE QUESTION_BLOCK = ' + "'" + str(BLOCK_NAME) + "'"
     cursor = conn.cursor()
     cursor.execute(Comand)
     group_of_items = cursor.fetchall()
@@ -320,14 +327,13 @@ def search_name():
 
 @app.route('/search_name_result')
 def search_name_result():
-    final_result = []
     name = request.args['name']
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', name)
     for el in my_id:
-        fin = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        final_result.append(fin)
-    print(my_id)
-    print(final_result)
+        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        print(result)
+    result2 = list(group(result, 4))
+    print(result2)
 
 @app.route('/search_year')
 def search_year():
@@ -343,7 +349,8 @@ def search_year_result():
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    print(my_id)
+    result2 = list(group(result, 4))
+    print(result2)
 
 @app.route('/search_town')
 def search_town():
@@ -359,7 +366,8 @@ def search_town_result():
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    print(my_id)
+    result2 = list(group(result, 4))
+    print(result2)
 
 
 @app.route('/search_gender')
@@ -375,9 +383,10 @@ def search_gender_result():
     gender = request.args['gender']
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'gender', gender)
     for el in my_id:
-        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        result = search_what_by_arg('QS_ID, QS_TXT, ANS_TXT, cors_id', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    print(my_id)
+    result2 = list(group(result, 4))
+    print(result2)
 
 
 @app.route('/add_cors')
@@ -396,11 +405,20 @@ def add_cors_fin():
     add_info_to_db('cors_info.db', 'cors_info', raw2, str(raw1))
 
 
-@app.route('/convert_to_csv')
-def convert_to_csv():
-    export_to_csv('ANS_DB.db')
+@app.route('/convert_ans')
+def convert_ans():
+    export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
     render_template('convert_to_csv.html')
 
+@app.route('/convert_qs')
+def convert_qs():
+    export_to_csv('QS_And_Forms_DB.db', 'List_of_qs', 'output_qs.csv')
+    render_template('convert_to_csv.html')
+
+@app.route('/convert_cons')
+def convert_cons():
+    export_to_csv('cors_info.db', 'cors_info', 'output_cons.csv')
+    render_template('convert_to_csv.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
