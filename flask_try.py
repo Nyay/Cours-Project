@@ -233,6 +233,7 @@ def group(iterable, count):
 
 # Разбиение чего-то по count элементов
 
+
 @app.route('/')
 def main_page_task():
     urls = {'Добавить вопросы в DB': url_for('add_info'),
@@ -269,12 +270,13 @@ def add_info():
 
 @app.route('/add_to_db')
 def add_to_db():
-    FILE_NAME = request.args['file_name']
-    BLOCK_NAME = request.args['block_name']
-    QUESTION_TEXT = open_file_read(FILE_NAME)
-    QUESTION_TEXT = QUESTION_TEXT.split('\n')
+    file_name = request.args['file_name']
+    block_name_dirty = request.args['block_name']
+    block_name = re.sub(' ', '_', block_name_dirty)
+    question_text = open_file_read(file_name)
+    question_text = question_text.split('\n')
     create_table_qs('List_of_qs')
-    insert_task_qs(QUESTION_TEXT, 'List_of_qs', BLOCK_NAME)
+    insert_task_qs(question_text, 'List_of_qs', block_name)
     urls = {'Добавить еще один блок вопросов.': url_for('add_info'),
             }
     return render_template('add_to_db.html', urls=urls)
@@ -307,6 +309,7 @@ def add_qs():
     block_names = get_block_name('List_of_qs_try')
     return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names)
 
+
 @app.route('/add_qs_result')
 def add_qs_result():
     conn = sqlite3.connect('QS_And_Forms_DB.db')
@@ -332,6 +335,7 @@ def add_qs_result():
         return render_template('add_qs_result.html', list_of_random_items=list_of_random_items)
     else:
         return render_template('add_qs_error.html')
+
 
 @app.route('/select_form')
 def select_form():
