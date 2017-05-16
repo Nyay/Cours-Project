@@ -4,6 +4,9 @@ import sqlite3
 import os
 import random
 import csv
+import json
+import conf
+import re
 
 
 app = Flask(__name__)
@@ -121,6 +124,35 @@ def get_id(TABLE_NAME):
 
 # Достаем id вопросов из формы
 
+
+def get_block_name(TABLE_NAME):
+    Final_list = []
+    conn = sqlite3.connect('QS_And_Forms_DB.db')
+    cursor = conn.cursor()
+    COMAND = 'SELECT QUESTION_BLOCK FROM ' + TABLE_NAME
+    cursor.execute(COMAND)
+    LIST_OF_NAMES = cursor.fetchall()
+    for element in LIST_OF_NAMES:
+        for el in element:
+            Final_list.append(el)
+    conn.close()
+    return set(Final_list)
+
+
+def get_block_qs_amount(TABLE_NAME, arg):
+    QS_list = []
+    conn = sqlite3.connect('QS_And_Forms_DB.db')
+    cursor = conn.cursor()
+    COMAND = 'SELECT QUESTION_TEXT FROM ' + str(TABLE_NAME) + " WHERE QUESTION_BLOCK = '" + str(arg) + "' ;"
+    cursor.execute(COMAND)
+    LIST_OF_NAMES = cursor.fetchall()
+    for element in LIST_OF_NAMES:
+        for el in element:
+            QS_list.append(el)
+    conn.close()
+    return len(QS_list)
+
+
 def add_ans(El1, El2, El3):
     conn = sqlite3.connect('ANS_DB.db')
     try:
@@ -171,7 +203,7 @@ def search_what_by_arg(what, db, table, wtf, arg):
     search_result = []
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
-    CMD = 'SELECT ' + str(what) + ' FROM ' + str(table) + ' WHERE ' + str(wtf) + ' = ' + "'" + str(arg) + "' ;"
+    CMD = 'SELECT ' + str(what) + ' FROM ' + str(table) + ' WHERE ' + str(wtf) + " = '" + str(arg) + "' ;"
     print(CMD)
     cursor.execute(CMD)
     search_taple = cursor.fetchall()
@@ -207,6 +239,7 @@ def main_page_task():
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -219,8 +252,7 @@ def main_page_task():
     urls_5 = {'Экспорт ответов': url_for('convert_ans'),
               'Экспорт вопросов': url_for('convert_qs'),
               'Экспорт кор. инф.': url_for('convert_cons'),
-
-    }
+              }
     return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 
@@ -256,30 +288,48 @@ def crt_form():
 @app.route('/crt_form_fnl')
 def crt_form_fnl():
     conn = sqlite3.connect('QS_And_Forms_DB.db')
-    MAX_QS_MUN = request.args['amount']
-    MAX_QS_MUN = int(MAX_QS_MUN)
-    FORM_NAME = request.args['form_name']
-    BLOCK_NAME = request.args['block_name']
-    List_of_QS = []
-    Comand = 'SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs WHERE QUESTION_BLOCK = ' + "'" + str(BLOCK_NAME) + "'"
-    cursor = conn.cursor()
-    cursor.execute(Comand)
-    group_of_items = cursor.fetchall()
-    list_of_random_items = random.sample(group_of_items, MAX_QS_MUN)
-    for word in list_of_random_items:
-        List_of_QS.append(word[0])
+    form_name = request.args['form_name']
+
     try:
-        COMAND = 'CREATE TABLE ' + str(FORM_NAME) + ' (QUESTION_ID   INTEGER   NOT NULL, QUESTION_TEXT   TEXT   NOT NULL)'
-        conn.execute(COMAND)
+        cmd = 'CREATE TABLE ' + str(form_name) + ' (QUESTION_ID   INTEGER   NOT NULL, QUESTION_TEXT   TEXT   NOT NULL)'
+        conn.execute(cmd)
         conn.commit()
     except sqlite3.OperationalError:
-        print('        table exist         ')
-    for element in list_of_random_items:
-        COMMAND_ADD = 'INSERT INTO ' + str(FORM_NAME) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + "'" + str(element[0]) + "','" + str(element[1]) + "'" +');'
-        conn.execute(COMMAND_ADD)
-        conn.commit()
-    return render_template('crt_form_fnl.html', list_of_random_items=list_of_random_items)
+        print('')
+    return render_template('crt_form_fnl.html')
 
+
+@app.route('/add_qs')
+def add_qs():
+    form_names = get_tables_names()
+    block_names = get_block_name('List_of_qs_try')
+    return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names)
+
+@app.route('/add_qs_result')
+def add_qs_result():
+    conn = sqlite3.connect('QS_And_Forms_DB.db')
+    amount = int(request.args['amount'])
+    print(amount)
+    form_name = request.args['form_name']
+    print(form_name)
+    block_name = request.args['block_name']
+    print(block_name)
+    max_amount = get_block_qs_amount('List_of_qs_try', block_name)
+    print(max_amount)
+    if amount <= max_amount:
+        cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_BLOCK = '" + str(block_name) + "'"
+        cursor = conn.cursor()
+        cursor.execute(cmd)
+        group_of_items = cursor.fetchall()
+        list_of_random_items = random.sample(group_of_items, amount)
+        for element in list_of_random_items:
+            cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' +\
+                          "'" + str(element[0]) + "','" + str(element[1]) + "'" + ');'
+            conn.execute(cmd_add)
+            conn.commit()
+        return render_template('add_qs_result.html', list_of_random_items=list_of_random_items)
+    else:
+        return render_template('add_qs_error.html')
 
 @app.route('/select_form')
 def select_form():
@@ -289,10 +339,17 @@ def select_form():
 
 @app.route('/open_form')
 def open_form():
+    dt = {"items": []}
     global NAME
     NAME = request.args['selected_form']
     List_Q = get_form(NAME)
-    return render_template('open_form.html', List_Q=List_Q)
+    rng = len(List_Q)
+    for i in range(rng):
+        dt['items'].append(List_Q[i])
+    jsn = json.dumps(dt)
+    print(jsn)
+
+    return render_template('js_try.html', List_Q=List_Q, rng=rng, jsn=jsn, dt=dt)
 
 
 @app.route('/check_ans')
@@ -313,16 +370,26 @@ def check_ans():
 
 @app.route('/search_id')
 def search_id():
-    search_args = search_task('ANS_Db.db', 'cors_info', 'id')
+    search_args = set(search_task('ANS_Db.db', 'ALL_ANS', 'QS_ID'))
     print(search_args)
-    return render_template('search_id.html', info = search_args)
+    return render_template('search_id.html', info=search_args)
+
+
+@app.route('/search_id_result')
+def search_id_result():
+    q_id = request.args['id']
+    result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'QS_ID', q_id)
+    print(result)
+    result2 = list(group(result, 4))
+    print(result2)
+    return render_template('search_id_result.html', q_id=q_id, result=result2)
 
 
 @app.route('/search_name')
 def search_name():
     search_args = search_task('cors_info.db', 'cors_info', 'name')
     print(search_args)
-    return render_template('search_name.html', info = search_args)
+    return render_template('search_name.html', info=search_args)
 
 
 @app.route('/search_name_result')
@@ -334,12 +401,14 @@ def search_name_result():
         print(result)
     result2 = list(group(result, 4))
     print(result2)
+    return render_template('search_name_result.html', name=name, result=result2)
+
 
 @app.route('/search_year')
 def search_year():
     search_args = search_task('cors_info.db', 'cors_info', 'year')
     print(search_args)
-    return render_template('search_town.html', info = search_args)
+    return render_template('search_year.html', info=search_args)
 
 
 @app.route('/search_year_result')
@@ -351,12 +420,14 @@ def search_year_result():
         print(result)
     result2 = list(group(result, 4))
     print(result2)
+    return render_template('search_year_result.html', year=year, result=result2)
+
 
 @app.route('/search_town')
 def search_town():
     search_args = search_task('cors_info.db', 'cors_info', 'town')
     print(search_args)
-    return render_template('search_town.html', info = search_args)
+    return render_template('search_town.html', info=search_args)
 
 
 @app.route('/search_town_result')
@@ -368,14 +439,14 @@ def search_town_result():
         print(result)
     result2 = list(group(result, 4))
     print(result2)
-
+    return render_template('search_town_result.html', town=town, result=result2)
 
 @app.route('/search_gender')
 def search_gender():
     search_args = search_task('cors_info.db', 'cors_info', 'gender')
     print(search_args)
     search_args = set(search_args)
-    return render_template('search_gender.html', info = search_args)
+    return render_template('search_gender.html', info=search_args)
 
 
 @app.route('/search_gender_result')
@@ -387,7 +458,7 @@ def search_gender_result():
         print(result)
     result2 = list(group(result, 4))
     print(result2)
-
+    return render_template('search_gender_result.html', gender=gender, result=result2)
 
 @app.route('/add_cors')
 def add_cors():
@@ -407,18 +478,29 @@ def add_cors_fin():
 
 @app.route('/convert_ans')
 def convert_ans():
-    export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-    render_template('convert_to_csv.html')
+    try:
+        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
+        return render_template('convert_to_csv.html', file_name='output_ans.csv')
+    except BaseException:
+        return render_template('convert_to_csv_error.html')
+
 
 @app.route('/convert_qs')
 def convert_qs():
-    export_to_csv('QS_And_Forms_DB.db', 'List_of_qs', 'output_qs.csv')
-    render_template('convert_to_csv.html')
+    try:
+        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_qs.csv')
+        return render_template('convert_to_csv.html', file_name='output_qs.csv')
+    except BaseException:
+        return render_template('convert_to_csv_error.html')
+
 
 @app.route('/convert_cons')
 def convert_cons():
-    export_to_csv('cors_info.db', 'cors_info', 'output_cons.csv')
-    render_template('convert_to_csv.html')
+    try:
+        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
+        return render_template('convert_to_csv.html', file_name='output_cons.csv')
+    except BaseException:
+        return render_template('convert_to_csv_error.html')
 
 if __name__ == '__main__':
     app.run(debug=True)

@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<p>Результат поиска для города: {{ town }}</p>
+<br>
+{% for el in result %}
+<p>Вопрос: </p>{{ el[1] }}<br><p>Ответ: </p>{{ el[2] }}
+{% endfor %}
+</body>
+</html>

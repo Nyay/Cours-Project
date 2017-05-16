@@ -5,6 +5,19 @@
     <title>Title</title>
 </head>
 <body>
-
+<p>Результат поиска для: {{ name }} id: {{ result[0][3] }}</p>
+<table>
+    <tr>
+        <th>Вопросы:</th>
+        <th>Ответы:</th>
+    </tr>
+    {% for el in result %}
+    <tr>
+        <th>{{ el[1] }}</th>
+        <th>{{ el[2] }}</th>
+    </tr>
+    {% endfor %}
+</table>
+<br>
 </body>
 </html>
