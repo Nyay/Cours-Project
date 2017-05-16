@@ -288,15 +288,17 @@ def crt_form():
 @app.route('/crt_form_fnl')
 def crt_form_fnl():
     conn = sqlite3.connect('QS_And_Forms_DB.db')
-    form_name = request.args['form_name']
-
+    form_name_dirty = request.args['form_name']
+    form_name = re.sub(' ', '_', form_name_dirty)
     try:
         cmd = 'CREATE TABLE ' + str(form_name) + ' (QUESTION_ID   INTEGER   NOT NULL, QUESTION_TEXT   TEXT   NOT NULL)'
         conn.execute(cmd)
         conn.commit()
+        conn.close()
+        return render_template('crt_form_result.html', form_name=form_name)
     except sqlite3.OperationalError:
         print('')
-    return render_template('crt_form_fnl.html')
+        return render_template('crt_form_error.html')
 
 
 @app.route('/add_qs')

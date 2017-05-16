@@ -2,20 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="24cf9706-af2f-40ae-b23f-30aa3336f2bd" name="Default" comment="">
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CoursWork/Cours_Base.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CoursWork/Cours_Work_Base.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CoursWork/Main_DB.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CoursWork/main.py" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CoursWork/test.db" afterPath="" />
-      <change type="DELETED" beforePath="$PROJECT_DIR$/CoursWork/try.py" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/QS_And_Forms_DB.db" afterPath="$PROJECT_DIR$/QS_And_Forms_DB.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/cors_info.db" afterPath="$PROJECT_DIR$/cors_info.db" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/templates/crt_form_error.html" />
+      <change type="MOVED" beforePath="$PROJECT_DIR$/templates/crt_form_fnl.html" afterPath="$PROJECT_DIR$/templates/crt_form_result.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/flask_try.py" afterPath="$PROJECT_DIR$/flask_try.py" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/add_cors.html" afterPath="$PROJECT_DIR$/templates/add_cors.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/crt_form.html" afterPath="$PROJECT_DIR$/templates/crt_form.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/search_id.html" afterPath="$PROJECT_DIR$/templates/search_id.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/templates/search_name_result.html" afterPath="$PROJECT_DIR$/templates/search_name_result.html" />
     </list>
     <ignored path="Cours-Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -45,8 +34,8 @@
       <file leaf-file-name="flask_try.py" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/flask_try.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1552">
-              <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+            <state relative-caret-position="160">
+              <caret line="307" column="80" selection-start-line="307" selection-start-column="80" selection-end-line="307" selection-end-column="80" />
               <folding>
                 <element signature="e#0#23#0" expanded="true" />
                 <element signature="e#234#399#0" expanded="false" />
@@ -73,29 +62,40 @@
                 <element signature="e#7848#7939#0" expanded="false" />
                 <element signature="e#7986#8025#0" expanded="false" />
                 <element signature="e#8074#8480#0" expanded="false" />
-                <element signature="e#9031#9194#0" expanded="false" />
-                <element signature="e#9250#10339#0" expanded="false" />
-                <element signature="e#10391#10477#0" expanded="false" />
-                <element signature="e#10526#10837#0" expanded="false" />
-                <element signature="e#10886#11264#0" expanded="false" />
-                <element signature="e#11313#11462#0" expanded="false" />
-                <element signature="e#11525#11779#0" expanded="false" />
-                <element signature="e#11832#11982#0" expanded="false" />
-                <element signature="e#12049#12416#0" expanded="false" />
-                <element signature="e#12469#12619#0" expanded="false" />
-                <element signature="e#12686#13053#0" expanded="false" />
-                <element signature="e#13106#13256#0" expanded="false" />
-                <element signature="e#13323#13690#0" expanded="false" />
-                <element signature="e#13746#13935#0" expanded="false" />
-                <element signature="e#14006#14417#0" expanded="false" />
-                <element signature="e#14463#14502#0" expanded="false" />
-                <element signature="e#14557#14882#0" expanded="false" />
-                <marker date="1494958030000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
-                <marker date="1494958030000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
-                <marker date="1494958030000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
-                <marker date="1494958030000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
-                <marker date="1494958030000" expanded="true" signature="9616:9717" ph="SELECT QUEST... List_of_qs_try" />
+                <element signature="e#8621#9146#0" expanded="false" />
+                <element signature="e#9189#9352#0" expanded="false" />
+                <element signature="e#9408#10497#0" expanded="false" />
+                <element signature="e#10549#10635#0" expanded="false" />
+                <element signature="e#10684#10995#0" expanded="false" />
+                <element signature="e#11044#11422#0" expanded="false" />
+                <element signature="e#11471#11620#0" expanded="false" />
+                <element signature="e#11683#11937#0" expanded="false" />
+                <element signature="e#11990#12140#0" expanded="false" />
+                <element signature="e#12207#12574#0" expanded="false" />
+                <element signature="e#12627#12777#0" expanded="false" />
+                <element signature="e#12844#13211#0" expanded="false" />
+                <element signature="e#13264#13414#0" expanded="false" />
+                <element signature="e#13481#13848#0" expanded="false" />
+                <element signature="e#13904#14093#0" expanded="false" />
+                <element signature="e#14164#14575#0" expanded="false" />
+                <element signature="e#14621#14660#0" expanded="false" />
+                <element signature="e#14715#15040#0" expanded="false" />
+                <marker date="1494958301000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
+                <marker date="1494958301000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
+                <marker date="1494958301000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
+                <marker date="1494958301000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
+                <marker date="1494958301000" expanded="true" signature="9774:9875" ph="SELECT QUEST... List_of_qs_try" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="crt_form_error.html" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/templates/crt_form_error.html">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="64">
+              <caret line="4" column="16" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="16" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -161,6 +161,7 @@
         <option value="$PROJECT_DIR$/templates/add_qs.html" />
         <option value="$PROJECT_DIR$/templates/convert_to_csv_error.html" />
         <option value="$PROJECT_DIR$/templates/crt_form.html" />
+        <option value="$PROJECT_DIR$/templates/crt_form_error.html" />
         <option value="$PROJECT_DIR$/flask_try.py" />
       </list>
     </option>
@@ -677,28 +678,29 @@
             <element signature="e#7848#7939#0" expanded="false" />
             <element signature="e#7986#8025#0" expanded="false" />
             <element signature="e#8074#8480#0" expanded="false" />
-            <element signature="e#9031#9194#0" expanded="false" />
-            <element signature="e#9250#10339#0" expanded="false" />
-            <element signature="e#10391#10477#0" expanded="false" />
-            <element signature="e#10526#10837#0" expanded="false" />
-            <element signature="e#10886#11264#0" expanded="false" />
-            <element signature="e#11313#11462#0" expanded="false" />
-            <element signature="e#11525#11779#0" expanded="false" />
-            <element signature="e#11832#11982#0" expanded="false" />
-            <element signature="e#12049#12416#0" expanded="false" />
-            <element signature="e#12469#12619#0" expanded="false" />
-            <element signature="e#12686#13053#0" expanded="false" />
-            <element signature="e#13106#13256#0" expanded="false" />
-            <element signature="e#13323#13690#0" expanded="false" />
-            <element signature="e#13746#13935#0" expanded="false" />
-            <element signature="e#14006#14417#0" expanded="false" />
-            <element signature="e#14463#14502#0" expanded="false" />
-            <element signature="e#14557#14882#0" expanded="false" />
-            <marker date="1494958030000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
-            <marker date="1494958030000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
-            <marker date="1494958030000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
-            <marker date="1494958030000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
-            <marker date="1494958030000" expanded="true" signature="9616:9717" ph="SELECT QUEST... List_of_qs_try" />
+            <element signature="e#8621#9146#0" expanded="false" />
+            <element signature="e#9189#9352#0" expanded="false" />
+            <element signature="e#9408#10497#0" expanded="false" />
+            <element signature="e#10549#10635#0" expanded="false" />
+            <element signature="e#10684#10995#0" expanded="false" />
+            <element signature="e#11044#11422#0" expanded="false" />
+            <element signature="e#11471#11620#0" expanded="false" />
+            <element signature="e#11683#11937#0" expanded="false" />
+            <element signature="e#11990#12140#0" expanded="false" />
+            <element signature="e#12207#12574#0" expanded="false" />
+            <element signature="e#12627#12777#0" expanded="false" />
+            <element signature="e#12844#13211#0" expanded="false" />
+            <element signature="e#13264#13414#0" expanded="false" />
+            <element signature="e#13481#13848#0" expanded="false" />
+            <element signature="e#13904#14093#0" expanded="false" />
+            <element signature="e#14164#14575#0" expanded="false" />
+            <element signature="e#14621#14660#0" expanded="false" />
+            <element signature="e#14715#15040#0" expanded="false" />
+            <marker date="1494958301000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
+            <marker date="1494958301000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
+            <marker date="1494958301000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
+            <marker date="1494958301000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
+            <marker date="1494958301000" expanded="true" signature="9774:9875" ph="SELECT QUEST... List_of_qs_try" />
           </folding>
         </state>
       </provider>
@@ -773,28 +775,29 @@
             <element signature="e#7848#7939#0" expanded="false" />
             <element signature="e#7986#8025#0" expanded="false" />
             <element signature="e#8074#8480#0" expanded="false" />
-            <element signature="e#9031#9194#0" expanded="false" />
-            <element signature="e#9250#10339#0" expanded="false" />
-            <element signature="e#10391#10477#0" expanded="false" />
-            <element signature="e#10526#10837#0" expanded="false" />
-            <element signature="e#10886#11264#0" expanded="false" />
-            <element signature="e#11313#11462#0" expanded="false" />
-            <element signature="e#11525#11779#0" expanded="false" />
-            <element signature="e#11832#11982#0" expanded="false" />
-            <element signature="e#12049#12416#0" expanded="false" />
-            <element signature="e#12469#12619#0" expanded="false" />
-            <element signature="e#12686#13053#0" expanded="false" />
-            <element signature="e#13106#13256#0" expanded="false" />
-            <element signature="e#13323#13690#0" expanded="false" />
-            <element signature="e#13746#13935#0" expanded="false" />
-            <element signature="e#14006#14417#0" expanded="false" />
-            <element signature="e#14463#14502#0" expanded="false" />
-            <element signature="e#14557#14882#0" expanded="false" />
-            <marker date="1494958030000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
-            <marker date="1494958030000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
-            <marker date="1494958030000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
-            <marker date="1494958030000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
-            <marker date="1494958030000" expanded="true" signature="9616:9717" ph="SELECT QUEST... List_of_qs_try" />
+            <element signature="e#8621#9146#0" expanded="false" />
+            <element signature="e#9189#9352#0" expanded="false" />
+            <element signature="e#9408#10497#0" expanded="false" />
+            <element signature="e#10549#10635#0" expanded="false" />
+            <element signature="e#10684#10995#0" expanded="false" />
+            <element signature="e#11044#11422#0" expanded="false" />
+            <element signature="e#11471#11620#0" expanded="false" />
+            <element signature="e#11683#11937#0" expanded="false" />
+            <element signature="e#11990#12140#0" expanded="false" />
+            <element signature="e#12207#12574#0" expanded="false" />
+            <element signature="e#12627#12777#0" expanded="false" />
+            <element signature="e#12844#13211#0" expanded="false" />
+            <element signature="e#13264#13414#0" expanded="false" />
+            <element signature="e#13481#13848#0" expanded="false" />
+            <element signature="e#13904#14093#0" expanded="false" />
+            <element signature="e#14164#14575#0" expanded="false" />
+            <element signature="e#14621#14660#0" expanded="false" />
+            <element signature="e#14715#15040#0" expanded="false" />
+            <marker date="1494958301000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
+            <marker date="1494958301000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
+            <marker date="1494958301000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
+            <marker date="1494958301000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
+            <marker date="1494958301000" expanded="true" signature="9774:9875" ph="SELECT QUEST... List_of_qs_try" />
           </folding>
         </state>
       </provider>
@@ -949,7 +952,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/templates/crt_form_fnl.html">
+    <entry file="file://$PROJECT_DIR$/templates/crt_form_result.html">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
           <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="10" selection-end-column="7" />
@@ -1005,10 +1008,18 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/templates/crt_form_error.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="64">
+          <caret line="4" column="16" selection-start-line="4" selection-start-column="11" selection-end-line="4" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/flask_try.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1552">
-          <caret line="8" column="9" selection-start-line="8" selection-start-column="9" selection-end-line="8" selection-end-column="9" />
+        <state relative-caret-position="160">
+          <caret line="307" column="80" selection-start-line="307" selection-start-column="80" selection-end-line="307" selection-end-column="80" />
           <folding>
             <element signature="e#0#23#0" expanded="true" />
             <element signature="e#234#399#0" expanded="false" />
@@ -1035,28 +1046,29 @@
             <element signature="e#7848#7939#0" expanded="false" />
             <element signature="e#7986#8025#0" expanded="false" />
             <element signature="e#8074#8480#0" expanded="false" />
-            <element signature="e#9031#9194#0" expanded="false" />
-            <element signature="e#9250#10339#0" expanded="false" />
-            <element signature="e#10391#10477#0" expanded="false" />
-            <element signature="e#10526#10837#0" expanded="false" />
-            <element signature="e#10886#11264#0" expanded="false" />
-            <element signature="e#11313#11462#0" expanded="false" />
-            <element signature="e#11525#11779#0" expanded="false" />
-            <element signature="e#11832#11982#0" expanded="false" />
-            <element signature="e#12049#12416#0" expanded="false" />
-            <element signature="e#12469#12619#0" expanded="false" />
-            <element signature="e#12686#13053#0" expanded="false" />
-            <element signature="e#13106#13256#0" expanded="false" />
-            <element signature="e#13323#13690#0" expanded="false" />
-            <element signature="e#13746#13935#0" expanded="false" />
-            <element signature="e#14006#14417#0" expanded="false" />
-            <element signature="e#14463#14502#0" expanded="false" />
-            <element signature="e#14557#14882#0" expanded="false" />
-            <marker date="1494958030000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
-            <marker date="1494958030000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
-            <marker date="1494958030000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
-            <marker date="1494958030000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
-            <marker date="1494958030000" expanded="true" signature="9616:9717" ph="SELECT QUEST... List_of_qs_try" />
+            <element signature="e#8621#9146#0" expanded="false" />
+            <element signature="e#9189#9352#0" expanded="false" />
+            <element signature="e#9408#10497#0" expanded="false" />
+            <element signature="e#10549#10635#0" expanded="false" />
+            <element signature="e#10684#10995#0" expanded="false" />
+            <element signature="e#11044#11422#0" expanded="false" />
+            <element signature="e#11471#11620#0" expanded="false" />
+            <element signature="e#11683#11937#0" expanded="false" />
+            <element signature="e#11990#12140#0" expanded="false" />
+            <element signature="e#12207#12574#0" expanded="false" />
+            <element signature="e#12627#12777#0" expanded="false" />
+            <element signature="e#12844#13211#0" expanded="false" />
+            <element signature="e#13264#13414#0" expanded="false" />
+            <element signature="e#13481#13848#0" expanded="false" />
+            <element signature="e#13904#14093#0" expanded="false" />
+            <element signature="e#14164#14575#0" expanded="false" />
+            <element signature="e#14621#14660#0" expanded="false" />
+            <element signature="e#14715#15040#0" expanded="false" />
+            <marker date="1494958301000" expanded="true" signature="2400:2482" ph="SELECT NAME sqlite_master" />
+            <marker date="1494958301000" expanded="true" signature="4464:4561" ph="CREATE TABLE... ALL_ANS" />
+            <marker date="1494958301000" expanded="true" signature="4689:4804" ph="INSERT INTO ALL_ANS... " />
+            <marker date="1494958301000" expanded="true" signature="6431:6445" ph="SELECT * FRO... ALL_ANS" />
+            <marker date="1494958301000" expanded="true" signature="9774:9875" ph="SELECT QUEST... List_of_qs_try" />
           </folding>
         </state>
       </provider>
