@@ -125,6 +125,20 @@ def get_id(TABLE_NAME):
 # Достаем id вопросов из формы
 
 
+def get_column(data_base, column, table_name):
+    final_list = []
+    conn = sqlite3.connect(data_base)
+    cursor = conn.cursor()
+    cmd = 'SELECT ' + column + ' FROM ' + table_name
+    cursor.execute(cmd)
+    list_of_names = cursor.fetchall()
+    for element in list_of_names:
+        for el in element:
+            final_list.append(el)
+    conn.close()
+    return final_list
+
+
 def get_block_name(TABLE_NAME):
     Final_list = []
     conn = sqlite3.connect('QS_And_Forms_DB.db')
@@ -153,18 +167,18 @@ def get_block_qs_amount(TABLE_NAME, arg):
     return len(QS_list)
 
 
-def add_ans(El1, El2, El3):
+def add_ans(element_1, element_2, element_3, element_4):
     conn = sqlite3.connect('ANS_DB.db')
     try:
-        COMAND = 'CREATE TABLE ALL_ANS (QS_ID   INTEGER NOT NULL , QS_TXT   TEXT   NOT NULL, ANS_TXT TEXT NOT NULL)'
-        conn.execute(COMAND)
+        cmd = 'CREATE TABLE ALL_ANS (QS_ID   INTEGER NOT NULL , QS_TXT   TEXT   NOT NULL, ANS_TXT TEXT NOT NULL)'
+        conn.execute(cmd)
     except sqlite3.OperationalError:
         print('        table exist         ')
-    COMAND = 'INSERT INTO ALL_ANS (QS_ID, QS_TXT, ANS_TXT) VALUES (' + "'" + str(El1) + "','" + str(El2) + "','" + str(El3) + "');"
-    conn.execute(COMAND)
+    cmd = "INSERT INTO ALL_ANS (QS_ID, QS_TXT, ANS_TXT, cors_id) VALUES ('" +\
+          str(element_1) + "','" + str(element_2) + "','" + str(element_3) + "','" + str(element_4) + "');"
+    conn.execute(cmd)
     conn.commit()
     conn.close()
-
 # Добавление ответов в таблицу
 
 
@@ -339,23 +353,17 @@ def add_qs_result():
 
 @app.route('/select_form')
 def select_form():
-    TABLES = get_tables_names()
-    return render_template('cmp_form.html', TABLES=TABLES)
+    tables = get_tables_names()
+    return render_template('cmp_form.html', TABLES=tables)
 
 
 @app.route('/open_form')
 def open_form():
-    dt = {"items": []}
-    global NAME
-    NAME = request.args['selected_form']
-    List_Q = get_form(NAME)
-    rng = len(List_Q)
-    for i in range(rng):
-        dt['items'].append(List_Q[i])
-    jsn = json.dumps(dt)
-    print(jsn)
-
-    return render_template('js_try.html', List_Q=List_Q, rng=rng, jsn=jsn, dt=dt)
+    form_name = request.args['selected_form']
+    list_of_qs = get_form(form_name)
+    list_of_names = get_column('cors_info.db', 'name, id', 'cors_info')
+    print(list_of_names)
+    return render_template('js_try.html')
 
 
 @app.route('/check_ans')
