@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+        <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <title>Title</title>
+</head>
+<body>
+<div class="main_q">
+<div class="low_q">
+<form action="/check_ans">
+{% for element in List_Q %}
+ <label><b>{{ element }}</b><br><input type="text" name="{{ id }}"></label><br>
+{% endfor %}
+<input type="submit" value="Отправить">
+</form>
+</div>
+</div>
+</body>
+</html>

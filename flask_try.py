@@ -1,4 +1,4 @@
-from flask import Flask
+from flask import Flask, session
 from flask import url_for, render_template, request
 import sqlite3
 import os
@@ -7,9 +7,13 @@ import csv
 import json
 import conf
 import re
+import os
 
 
 app = Flask(__name__)
+key = os.urandom(24)
+app.secret_key = key
+#print(key)
 
 
 def add_info_to_db(db, table, where, what):
@@ -94,37 +98,6 @@ def get_tables_names():
 
 # Достаем название таблиц(Форм из DB)
 
-def get_form(TABLE_NAME):
-    Final_list = []
-    conn = sqlite3.connect('QS_And_Forms_DB.db')
-    cursor = conn.cursor()
-    COMAND = 'SELECT QUESTION_TEXT FROM ' + TABLE_NAME
-    cursor.execute(COMAND)
-    LIST_OF_NAMES = cursor.fetchall()
-    for element in LIST_OF_NAMES:
-        for el in element:
-            Final_list.append(el)
-    conn.close()
-    return Final_list
-
-# Достаем вопросы из формы
-
-def get_id(TABLE_NAME):
-    Final_list = []
-    conn = sqlite3.connect('QS_And_Forms_DB.db')
-    cursor = conn.cursor()
-    COMAND = 'SELECT QUESTION_ID FROM ' + TABLE_NAME
-    cursor.execute(COMAND)
-    LIST_OF_NAMES = cursor.fetchall()
-    for element in LIST_OF_NAMES:
-        for el in element:
-            Final_list.append(el)
-    conn.close()
-    return Final_list
-
-# Достаем id вопросов из формы
-
-
 def get_column(data_base, column, table_name):
     final_list = []
     conn = sqlite3.connect(data_base)
@@ -167,7 +140,7 @@ def get_block_qs_amount(TABLE_NAME, arg):
     return len(QS_list)
 
 
-def add_ans(element_1, element_2, element_3, element_4):
+def add_ans_fnc(qs_id, qs_txt, ans_txt, cors_txt):
     conn = sqlite3.connect('ANS_DB.db')
     try:
         cmd = 'CREATE TABLE ALL_ANS (QS_ID   INTEGER NOT NULL , QS_TXT   TEXT   NOT NULL, ANS_TXT TEXT NOT NULL)'
@@ -175,7 +148,7 @@ def add_ans(element_1, element_2, element_3, element_4):
     except sqlite3.OperationalError:
         print('        table exist         ')
     cmd = "INSERT INTO ALL_ANS (QS_ID, QS_TXT, ANS_TXT, cors_id) VALUES ('" +\
-          str(element_1) + "','" + str(element_2) + "','" + str(element_3) + "','" + str(element_4) + "');"
+          str(qs_id) + "','" + str(qs_txt) + "','" + str(ans_txt) + "','" + str(cors_txt) + "');"
     conn.execute(cmd)
     conn.commit()
     conn.close()
@@ -354,32 +327,45 @@ def add_qs_result():
 @app.route('/select_form')
 def select_form():
     tables = get_tables_names()
-    return render_template('cmp_form.html', TABLES=tables)
+    list_of_names = list(group(get_column('cors_info.db', 'name, id', 'cors_info'), 2))
+    print(list_of_names)
+    return render_template('cmp_form.html', TABLES=tables, names=list_of_names)
 
 
 @app.route('/open_form')
 def open_form():
     form_name = request.args['selected_form']
-    list_of_qs = get_form(form_name)
-    list_of_names = get_column('cors_info.db', 'name, id', 'cors_info')
-    print(list_of_names)
-    return render_template('js_try.html')
+    cors_id = request.args['cors_id']
+    session['cid'] = cors_id
+    session['fn'] = form_name
+    list_of_qs = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
+    print(list_of_qs)
+    print(session['fn'])
+    return render_template('open_form.html', List_Q=list_of_qs)
+
+
+@app.route('/add_ans')
+def add_ans():
+    cors_id = session['cid']
+    info = session['memory']
+    for el in info:
+        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id))
 
 
 @app.route('/check_ans')
 def check_ans():
-    name1 = NAME
-    print(name1)
-    answers = []
-    ids = get_id(name1)
-    qs_text = get_form(name1)
-    for element in qs_text:
-        ans = request.args[element]
+    d = {}
+    list_of_qs = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', session['fn'])
+    form_info = list(group(get_column('QS_And_Forms_DB.db', '*', session['fn']), 2))
+    for element in form_info:
+        answers = []
+        ans = request.args[element[1]]
         answers.append(ans)
-    for i in range(len(answers)):
-        add_ans(ids[i], qs_text[i], answers[i])
-    x = len(answers)
-    return render_template('check_ans.html', qs_text=qs_text, answers=answers,x=x)
+        answers.append(element[1])
+        d[str(element[0])] = answers
+    session['memory'] = d
+    print(session)
+    return render_template('check_ans.html', memory=d )
 
 
 @app.route('/search_id')
@@ -496,7 +482,7 @@ def convert_ans():
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
         return render_template('convert_to_csv.html', file_name='output_ans.csv')
     except BaseException:
-        return render_template('convert_to_csv_error.html')
+        return render_template('convert_to_csv_error.html', )
 
 
 @app.route('/convert_qs')

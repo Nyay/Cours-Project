@@ -13,6 +13,11 @@
         <option value="{{ element }}">{{ element }}</option>
     {% endfor %}
 </select>
+<select name="cors_id">
+    {% for element in names %}
+        <option value="{{ element[1] }}">{{ element[0] }} id: {{ element[1] }}</option>
+    {% endfor %}
+</select>
 <input type="submit" value="Отправить">
 </form>
 </div>

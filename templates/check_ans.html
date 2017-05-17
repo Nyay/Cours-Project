@@ -6,12 +6,15 @@
     <title>Title</title>
 </head>
 <body>
-{% for i in range(x) %}
-<div>
-    <p>{{ qs_text[i] }}<br>
-    {{ answers[i] }}<br>
-    </p>
-</div>
-{% endfor %}
+<form action="/add_ans">
+    <div class="low_q">
+            {% for el in memory %}
+        <p>{{ memory[el][1] }}<br>
+            {{ memory[el][0] }}<br>
+        </p>
+        {% endfor %}
+    </div>
+<input type="submit" value="Отправить">
+</form>
 </body>
 </html>
