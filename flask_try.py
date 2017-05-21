@@ -500,9 +500,9 @@ def convert_ans():
               }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-        return render_template('convert_to_csv.html', file_name='output_ans.csv',urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv.html', file_name='output_ans.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
     except BaseException:
-        return render_template('convert_to_csv_error.html', )
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 
 @app.route('/convert_qs')
@@ -529,7 +529,7 @@ def convert_qs():
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_qs.csv')
         return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
     except BaseException:
-        return render_template('convert_to_csv_error.html')
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 
 @app.route('/convert_cons')
@@ -556,7 +556,7 @@ def convert_cons():
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
         return render_template('convert_to_csv.html', file_name='output_cons.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
     except BaseException:
-        return render_template('convert_to_csv_error.html')
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 if __name__ == '__main__':
     app.run(debug=True)
