@@ -83,6 +83,15 @@ def insert_task_qs(QT, TABLE_NAME, BLOCK_NAME):
 
 # Добавление вопросов в таблицу
 
+
+def insert_task_qs_2(QT, TABLE_NAME, BLOCK_NAME):
+    conn = sqlite3.connect('QS_And_Forms_DB.db')
+    COMMAND = 'INSERT INTO ' + TABLE_NAME + ' (QUESTION_TEXT, QUESTION_BLOCK) VALUES (' + "'" + QT + "','" + BLOCK_NAME + "'" +');'
+    conn.execute(COMMAND)
+    conn.commit()
+    conn.close()
+
+
 def get_tables_names():
     Final_list = []
     conn = sqlite3.connect('QS_And_Forms_DB.db')
@@ -227,7 +236,8 @@ def main_page_task():
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -317,7 +327,8 @@ def crt_form_fnl():
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -355,6 +366,66 @@ def add_qs():
     form_names = get_tables_names()
     block_names = get_block_name('List_of_qs_try')
     return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names)
+
+
+@app.route('/add_qs_manual')
+def add_qs_manual():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    form_names = get_tables_names()
+    return render_template('add_qs_manual.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5)
+
+
+@app.route('/add_qs_manual_result')
+def add_qs_manual_result():
+    list_of_random_items = []
+    conn = sqlite3.connect('QS_And_Forms_DB.db')
+    form_name = request.args['form_name']
+    print(form_name)
+    block_name = request.args['block_name']
+    new_qs = request.args['new_qs']
+    print(new_qs)
+    new_qs = new_qs.split('\r\n')
+    print(new_qs)
+    if '        ' in new_qs:
+        new_qs.remove('        ')
+    for q in new_qs:
+        insert_task_qs_2(q, 'List_of_qs_try', block_name)
+        cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_TEXT = '" + str(q) + "'"
+        cursor = conn.cursor()
+        cursor.execute(cmd)
+        group_of_items = cursor.fetchall()
+        print(group_of_items)
+        list_of_random_items.append(group_of_items)
+        print(list_of_random_items)
+    for lvl in list_of_random_items:
+        for element in lvl:
+            print(element[0])
+            print(element[1])
+            cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + \
+                      "'" + str(element[0]) + "','" + str(element[1]) + "'" + ');'
+            print(cmd_add)
+            conn.execute(cmd_add)
+            conn.commit()
+    return render_template('add_qs_manual_result.html')
 
 
 @app.route('/add_qs_result')

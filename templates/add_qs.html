@@ -2,22 +2,27 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
+    <link href="/static/style.css" type="text/css" rel="stylesheet">
     <title>Title</title>
 </head>
 <body>
 <div class="low_q">
 <form action="/add_qs_result">
-<label><b>Введите количество нужных вопросов из данного блока: </b><input type="text" name="amount"></label>
-<select name="block_name">
-    {% for element in BLOCKS %}
-        <option value="{{ element }}">{{ element }}</option>
-    {% endfor %}
-</select>
-<select name="form_name">
-    {% for element in TABLES %}
-        <option value="{{ element }}">{{ element }}</option>
-    {% endfor %}
-</select>
+<label><b>Введите количество нужных вопросов из данного блока: </b><input type="text" name="amount"></label><br>
+    <label><b>Выберите нужный блок вопросов: </b>
+        <select name="block_name">
+        {% for element in BLOCKS %}
+            <option value="{{ element }}">{{ element }}</option>
+        {% endfor %}
+        </select>
+    </label><br>
+    <label><b>Выьерите нужную анкету: </b>
+        <select name="form_name">
+        {% for element in TABLES %}
+            <option value="{{ element }}">{{ element }}</option>
+        {% endfor %}
+        </select>
+    </label><br>
 <input type="submit" value="Отправить">
 </form>
 </div>
