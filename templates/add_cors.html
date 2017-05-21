@@ -11,14 +11,16 @@
         <div class="low_q">
             <form action="/add_cors_fin">
             <label><b>Имя: </b><input type="text" name="name"></label><br>
-            <label><b>Возраст: </b><input type="text" name="year"></label>
-            <label><b>Город рождения: </b><input type="text" name="town"></label>
+            <label><b>Возраст: </b><input type="text" name="year"></label><br>
+            <label><b>Город рождения: </b><input type="text" name="town"></label><br>
             <label><b>Пол: </b>
                 <select name="gender">
                      <option value="Женский">Женский</option>
                     <option value="Мужской">Мужской</option>
                 </select>
-            </label>
+            </label><br>
+                <b>Дополнительная информация(Необязательно): </b><br>
+            <label><textarea name="additional_info"></textarea></label>
             <p><input type="submit" value="Отправить"></p>
             </form>
         </div>

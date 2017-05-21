@@ -344,18 +344,9 @@ def open_form():
     return render_template('open_form.html', List_Q=list_of_qs)
 
 
-@app.route('/add_ans')
-def add_ans():
-    cors_id = session['cid']
-    info = session['memory']
-    for el in info:
-        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id))
-
-
 @app.route('/check_ans')
 def check_ans():
     d = {}
-    list_of_qs = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', session['fn'])
     form_info = list(group(get_column('QS_And_Forms_DB.db', '*', session['fn']), 2))
     for element in form_info:
         answers = []
@@ -365,7 +356,16 @@ def check_ans():
         d[str(element[0])] = answers
     session['memory'] = d
     print(session)
-    return render_template('check_ans.html', memory=d )
+    return render_template('check_ans.html', memory=d)
+
+
+@app.route('/add_ans')
+def add_ans():
+    cors_id = session['cid']
+    info = session['memory']
+    for el in info:
+        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id))
+    return render_template('add_ans.html')
 
 
 @app.route('/search_id')
@@ -460,6 +460,7 @@ def search_gender_result():
     print(result2)
     return render_template('search_gender_result.html', gender=gender, result=result2)
 
+
 @app.route('/add_cors')
 def add_cors():
     return render_template('add_cors.html')
@@ -471,34 +472,89 @@ def add_cors_fin():
     year = request.args['year']
     gender = request.args['gender']
     town = request.args['town']
-    raw1 = "'" + str(name) + "','" + str(year) + "','" + str(town) + "','" + str(gender) + "'"
-    raw2 = 'name, year, town, gender'
+    additional_info = request.args['additional_info']
+    raw1 = "'" + str(name) + "','" + str(year) + "','" + str(town) + "','" + str(gender) + "','" + str(additional_info) + "'"
+    raw2 = 'name, year, town, gender, additional_info'
     add_info_to_db('cors_info.db', 'cors_info', raw2, str(raw1))
 
 
 @app.route('/convert_ans')
 def convert_ans():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-        return render_template('convert_to_csv.html', file_name='output_ans.csv')
+        return render_template('convert_to_csv.html', file_name='output_ans.csv',urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
     except BaseException:
         return render_template('convert_to_csv_error.html', )
 
 
 @app.route('/convert_qs')
 def convert_qs():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_qs.csv')
-        return render_template('convert_to_csv.html', file_name='output_qs.csv')
+        return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
     except BaseException:
         return render_template('convert_to_csv_error.html')
 
 
 @app.route('/convert_cons')
 def convert_cons():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-        return render_template('convert_to_csv.html', file_name='output_cons.csv')
+        return render_template('convert_to_csv.html', file_name='output_cons.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
     except BaseException:
         return render_template('convert_to_csv_error.html')
 
