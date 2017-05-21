@@ -414,10 +414,7 @@ def add_qs_manual_result():
         cursor.execute(cmd)
         group_of_items = cursor.fetchall()
         print(group_of_items)
-        list_of_random_items.append(group_of_items)
-        print(list_of_random_items)
-    for lvl in list_of_random_items:
-        for element in lvl:
+        for element in group_of_items:
             print(element[0])
             print(element[1])
             cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + \
