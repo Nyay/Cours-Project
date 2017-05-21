@@ -2,13 +2,56 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <title>Создание анкеты</title>
 </head>
 <body>
+<nav>
+  <ul class="menu">
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск по ответам</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
 <form action="/crt_form_fnl">
-<label><b>Введите название новой анкеты: </b><input type="text" name="form_name"></label><br>
-<p>Если название анкеты содержит пробелы, то прогрмма автоматически заменит их на '_' !!!</p>
-
+    <label>
+        <b>Введите название новой анкеты: </b><input type="text" name="form_name">
+    </label><br>
+    <p>Если название анкеты содержит пробелы, то прогрмма автоматически заменит их на '_' !!!</p>
     <p><input type="submit" value="Отправить"></p>
 </form>
 </body>

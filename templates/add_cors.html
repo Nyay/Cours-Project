@@ -3,17 +3,57 @@
 <head>
     <title></title>
                 <link href="/static/style.css" type="text/css" rel="stylesheet">
-
     <meta charset="UTF-8">
 </head>
 <body>
+<nav>
+  <ul class="menu">
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск по ответам</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
         <div class="main_q">
         <div class="low_q">
             <form action="/add_cors_fin">
-            <label><b>Имя: </b><input type="text" name="name"></label><br>
-            <label><b>Возраст: </b><input type="text" name="year"></label><br>
-            <label><b>Город рождения: </b><input type="text" name="town"></label><br>
-            <label><b>Пол: </b>
+            <label><b>ФИО корисподента: </b><input type="text" name="name"></label><br>
+            <label><b>Возраст корисподента: </b><input type="text" name="year"></label><br>
+            <label><b>Город рождения корисподента: </b><input type="text" name="town"></label><br>
+            <label><b>Пол корисподерна: </b>
                 <select name="gender">
                      <option value="Женский">Женский</option>
                     <option value="Мужской">Мужской</option>

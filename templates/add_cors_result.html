@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title></title>
+                <link href="/static/style.css" type="text/css" rel="stylesheet">
     <meta charset="UTF-8">
-    <link href="/static/style.css" type="text/css" rel="stylesheet">
-    <title>Экспорт закончен</title>
 </head>
 <body>
-    <nav>
+<nav>
   <ul class="menu">
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
@@ -47,6 +47,7 @@
     </li>
   </ul>
 </nav>
-    <p>Экспорт закончен. Результат записан в файл "{{ file_name }}", который находится в папке с программой.</p>
+<p>Корреспондент "{{ name }}" добавлен в базу данных. Теперь он доступен для выбора при прохождении анкеты. id
+корисподента: {{ cors_id }}
 </body>
 </html>

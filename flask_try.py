@@ -257,6 +257,24 @@ def add_info():
 
 @app.route('/add_to_db')
 def add_to_db():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     file_name = request.args['file_name']
     block_name_dirty = request.args['block_name']
     block_name = re.sub(' ', '_', block_name_dirty)
@@ -264,30 +282,72 @@ def add_to_db():
     question_text = question_text.split('\n')
     create_table_qs('List_of_qs')
     insert_task_qs(question_text, 'List_of_qs', block_name)
-    urls = {'Добавить еще один блок вопросов.': url_for('add_info'),
+    urls_6 = {'Добавить еще один блок вопросов.': url_for('add_info'),
             }
-    return render_template('add_to_db.html', urls=urls)
+    return render_template('add_to_db.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_6=urls_6)
 
 
 @app.route('/crt_form')
 def crt_form():
-    return render_template('crt_form.html')
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    return render_template('crt_form.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 
 @app.route('/crt_form_fnl')
 def crt_form_fnl():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     conn = sqlite3.connect('QS_And_Forms_DB.db')
     form_name_dirty = request.args['form_name']
     form_name = re.sub(' ', '_', form_name_dirty)
+    urls_6 = {'Перейти к добалению вопросов': url_for('add_qs'),
+              }
     try:
         cmd = 'CREATE TABLE ' + str(form_name) + ' (QUESTION_ID   INTEGER   NOT NULL, QUESTION_TEXT   TEXT   NOT NULL)'
         conn.execute(cmd)
         conn.commit()
         conn.close()
-        return render_template('crt_form_result.html', form_name=form_name)
+        return render_template('crt_form_result.html', form_name=form_name, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                               urls_4=urls_4, urls_5=urls_5, urls_6=urls_6)
     except sqlite3.OperationalError:
-        print('')
-        return render_template('crt_form_error.html')
+        reply = 'При создании анкеты произошла ошибка, попробуйте другое имя.'
+        print('error')
+        return render_template('crt_form_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                               urls_5=urls_5, text=reply)
 
 
 @app.route('/add_qs')
@@ -463,11 +523,47 @@ def search_gender_result():
 
 @app.route('/add_cors')
 def add_cors():
-    return render_template('add_cors.html')
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    return render_template('add_cors.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
 
 
 @app.route('/add_cors_fin')
 def add_cors_fin():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить вопросы в анкету': url_for('add_qs'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     name = request.args['name']
     year = request.args['year']
     gender = request.args['gender']
@@ -476,6 +572,9 @@ def add_cors_fin():
     raw1 = "'" + str(name) + "','" + str(year) + "','" + str(town) + "','" + str(gender) + "','" + str(additional_info) + "'"
     raw2 = 'name, year, town, gender, additional_info'
     add_info_to_db('cors_info.db', 'cors_info', raw2, str(raw1))
+    cors_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', str(name))
+    return render_template('add_cors_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           name=name, cors_id=cors_id)
 
 
 @app.route('/convert_ans')
