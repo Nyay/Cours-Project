@@ -13,7 +13,6 @@ import os
 app = Flask(__name__)
 key = os.urandom(24)
 app.secret_key = key
-#print(key)
 
 
 def add_info_to_db(db, table, where, what):
@@ -232,7 +231,8 @@ def group(iterable, count):
 
 @app.route('/')
 def main_page_task():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
@@ -264,6 +264,77 @@ def ch_wh_to_add():
 @app.route('/add_info')
 def add_info():
     return render_template('add_info.html')
+
+
+@app.route('/add_info_manual')
+def add_info_manual():
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    blocks = set(get_column('QS_And_Forms_DB.db', 'QUESTION_BLOCK', 'List_of_qs_try'))
+    return render_template('add_info_manual.html', blocks=blocks, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5)
+
+
+@app.route('/add_info_manual_result')
+def add_info_manual_result():
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    block_name = request.args['block_name']
+    new_block_name = request.args['new_block_name']
+    new_block_name = re.sub(' ', '_', new_block_name)
+    print(new_block_name)
+    new_qs = request.args['new_qs']
+    new_qs = new_qs.split('\r\n')
+    if '        ' in new_qs:
+        new_qs.remove('        ')
+    if new_block_name != '':
+        for q in new_qs:
+            insert_task_qs_2(q, 'List_of_qs', new_block_name)
+    else:
+        for q in new_qs:
+            insert_task_qs_2(q, 'List_of_qs', block_name)
+    urls_6 = {'Добавить еще один блок вопросов.': url_for('add_info'),
+            }
+    return render_template('add_to_db.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_6=urls_6)
 
 
 @app.route('/add_to_db')
@@ -365,7 +436,7 @@ def crt_form_fnl():
 @app.route('/add_qs')
 def add_qs():
     form_names = get_tables_names()
-    block_names = get_block_name('List_of_qs_try')
+    block_names = get_block_name('List_of_qs')
     return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names)
 
 
@@ -425,8 +496,8 @@ def add_qs_manual_result():
     if '        ' in new_qs:
         new_qs.remove('        ')
     for q in new_qs:
-        insert_task_qs_2(q, 'List_of_qs_try', block_name)
-        cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_TEXT = '" + str(q) + "'"
+        insert_task_qs_2(q, 'List_of_qs', block_name)
+        cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs WHERE QUESTION_TEXT = '" + str(q) + "'"
         cursor = conn.cursor()
         cursor.execute(cmd)
         group_of_items = cursor.fetchall()
@@ -462,7 +533,7 @@ def add_qs_chosen():
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
     form_names = get_tables_names()
-    qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs_try')
+    qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs')
     return render_template('add_qs_chosen.html', TABLES=form_names, QS=qs_list, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5)
 
@@ -491,7 +562,7 @@ def add_qs_chosen_result():
     conn = sqlite3.connect('QS_And_Forms_DB.db')
     form_name = request.args['form_name']
     qs = request.args['qs']
-    cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_TEXT = '" + str(qs) + "'"
+    cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs WHERE QUESTION_TEXT = '" + str(qs) + "'"
     cursor = conn.cursor()
     cursor.execute(cmd)
     group_of_items = cursor.fetchall()
@@ -540,9 +611,9 @@ def add_qs_result():
     amount = int(request.args['amount'])
     form_name = request.args['form_name']
     block_name = request.args['block_name']
-    max_amount = get_block_qs_amount('List_of_qs_try', block_name)
+    max_amount = get_block_qs_amount('List_of_qs', block_name)
     if amount <= max_amount:
-        cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_BLOCK = '" + str(block_name) + "'"
+        cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs WHERE QUESTION_BLOCK = '" + str(block_name) + "'"
         cursor = conn.cursor()
         cursor.execute(cmd)
         group_of_items = cursor.fetchall()
