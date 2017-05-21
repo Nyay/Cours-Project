@@ -237,7 +237,8 @@ def main_page_task():
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -396,15 +397,31 @@ def add_qs_manual():
 
 @app.route('/add_qs_manual_result')
 def add_qs_manual_result():
-    list_of_random_items = []
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     conn = sqlite3.connect('QS_And_Forms_DB.db')
     form_name = request.args['form_name']
-    print(form_name)
-    block_name = request.args['block_name']
+    block_name_dirty = request.args['block_name']
+    block_name = re.sub(' ', '_', block_name_dirty)
     new_qs = request.args['new_qs']
-    print(new_qs)
     new_qs = new_qs.split('\r\n')
-    print(new_qs)
     if '        ' in new_qs:
         new_qs.remove('        ')
     for q in new_qs:
@@ -413,29 +430,117 @@ def add_qs_manual_result():
         cursor = conn.cursor()
         cursor.execute(cmd)
         group_of_items = cursor.fetchall()
-        print(group_of_items)
         for element in group_of_items:
-            print(element[0])
-            print(element[1])
             cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + \
                       "'" + str(element[0]) + "','" + str(element[1]) + "'" + ');'
-            print(cmd_add)
             conn.execute(cmd_add)
             conn.commit()
-    return render_template('add_qs_manual_result.html')
+    qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
+    return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, qs_list=qs_list, form_name=form_name)
+
+
+@app.route('/add_qs_chosen')
+def add_qs_chosen():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    form_names = get_tables_names()
+    qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs_try')
+    return render_template('add_qs_chosen.html', TABLES=form_names, QS=qs_list, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5)
+
+
+@app.route('/add_qs_chosen_result')
+def add_qs_chosen_result():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    conn = sqlite3.connect('QS_And_Forms_DB.db')
+    form_name = request.args['form_name']
+    qs = request.args['qs']
+    cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_TEXT = '" + str(qs) + "'"
+    cursor = conn.cursor()
+    cursor.execute(cmd)
+    group_of_items = cursor.fetchall()
+    print(len(group_of_items))
+    if len(group_of_items) > 1:
+        print(group_of_items[0])
+        print(group_of_items[0][0])
+        print(group_of_items[0][1])
+        cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + \
+                  "'" + str(group_of_items[0][0]) + "','" + str(group_of_items[0][1]) + "'" + ');'
+        conn.execute(cmd_add)
+        conn.commit()
+    else:
+        for element in group_of_items:
+            cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + \
+                      "'" + str(element[0]) + "','" + str(element[1]) + "'" + ');'
+            conn.execute(cmd_add)
+            conn.commit()
+    qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
+    return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, qs_list=qs_list, form_name=form_name)
 
 
 @app.route('/add_qs_result')
 def add_qs_result():
+    urls = {'Добавить вопросы в DB': url_for('add_info'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     conn = sqlite3.connect('QS_And_Forms_DB.db')
     amount = int(request.args['amount'])
-    print(amount)
     form_name = request.args['form_name']
-    print(form_name)
     block_name = request.args['block_name']
-    print(block_name)
     max_amount = get_block_qs_amount('List_of_qs_try', block_name)
-    print(max_amount)
     if amount <= max_amount:
         cmd = "SELECT QUESTION_ID,QUESTION_TEXT FROM List_of_qs_try WHERE QUESTION_BLOCK = '" + str(block_name) + "'"
         cursor = conn.cursor()
@@ -447,7 +552,9 @@ def add_qs_result():
                           "'" + str(element[0]) + "','" + str(element[1]) + "'" + ');'
             conn.execute(cmd_add)
             conn.commit()
-        return render_template('add_qs_result.html', list_of_random_items=list_of_random_items)
+        qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
+        return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
+                               urls_4=urls_4, urls_5=urls_5, qs_list=qs_list, form_name=form_name)
     else:
         return render_template('add_qs_error.html')
 

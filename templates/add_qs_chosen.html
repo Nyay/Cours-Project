@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Корреспондент добален!</title>
-                <link href="/static/style.css" type="text/css" rel="stylesheet">
     <meta charset="UTF-8">
+    <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <title>Title</title>
 </head>
 <body>
 <nav>
@@ -47,7 +47,22 @@
     </li>
   </ul>
 </nav>
-<p>Корреспондент "{{ name }}" добавлен в базу данных. Теперь он доступен для выбора при прохождении анкеты. id
-корисподента: {{ cors_id }}</p>
+<form action="/add_qs_chosen_result">
+    <label><b>Выберете анкету, в которую хотите добавить вопросы: </b>
+        <select name="form_name">
+            {% for element in TABLES %}
+                <option value="{{ element }}">{{ element }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <label><b>Выберете вопрос, который хотите добавить:</b>
+        <select name="qs">
+            {% for element in QS %}
+                <option value="{{ element }}">{{ element }}</option>
+            {% endfor %}
+        </select>
+    </label><br>
+    <p><input type="submit" value="Отправить"></p>
+</form>
 </body>
 </html>
