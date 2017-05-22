@@ -54,25 +54,26 @@
             <p class="header">Форма для добавления вопросов в DB</p>
             <form  class="form_1" action="/add_info_manual_result">
                 <ul>
-                <li>
-                    <label>Выберете блок вопросов: </label>
-                        <select name="block_name">
-                        {% for element in blocks %}
-                        <option value="{{ element }}">{{ element }}</option>
-                        {% endfor %}
-                        </select>
-                </li>
                     <li>
-                    <label>Введите имя нового блока, если необходимо: </label>
-                    <input type="text" name="new_block_name" />
-                </li>
+                        <label>Выберете блок вопросов: </label>
+                            <select name="block_name">
+                            {% for element in blocks %}
+                                <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                            </select>
+                    </li>
                     <li>
-                    <label>Введите вопросы которые хотите добавить(разделяйте вопросы переносом строки): </label>
-                    <textarea name="new_qs" cols="40" rows="6"></textarea>
-                </li>
-                <li>
-                    <input type="submit" value="Отправить">
-                </li>
+                        <label>Введите имя нового блока, если необходимо: </label>
+                            <input type="text" name="new_block_name" />
+                            <span class="hint">Оставьте поле путым, если создавать новый блок нге нужно.</span>
+                    </li>
+                    <li>
+                        <label>Введите вопросы<br>(разделяйте вопросы переносом строки): </label>
+                        <textarea name="new_qs" cols="40" rows="6"></textarea>
+                    </li>
+                    <li>
+                        <input type="submit" value="Отправить">
+                    </li>
                 </ul>
             </form>
         </div>

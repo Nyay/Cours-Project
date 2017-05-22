@@ -6,25 +6,81 @@
     <title>Title</title>
 </head>
 <body>
-<div class="low_q">
-<form action="/add_qs_result">
-<label><b>Введите количество нужных вопросов из данного блока: </b><input type="text" name="amount"></label><br>
-    <label><b>Выберите нужный блок вопросов: </b>
-        <select name="block_name">
-        {% for element in BLOCKS %}
-            <option value="{{ element }}">{{ element }}</option>
-        {% endfor %}
-        </select>
-    </label><br>
-    <label><b>Выьерите нужную анкету: </b>
-        <select name="form_name">
-        {% for element in TABLES %}
-            <option value="{{ element }}">{{ element }}</option>
-        {% endfor %}
-        </select>
-    </label><br>
-<input type="submit" value="Отправить">
-</form>
-</div>
+<nav>
+  <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск по ответам</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
+<div class="main_text">
+            <p class="header">Форма для добавления вопросов в анкету</p>
+            <form class="form_1" action="/add_qs_result">
+                <ul>
+                    <li>
+                    <label>Выберите нужную анкету: </label>
+                            <select name="form_name">
+                            {% for element in TABLES %}
+                            <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                            </select>
+                    </li>
+                <li>
+                    <label>Выберите нужный блок вопросов: </label>
+                            <select name="block_name">
+                            {% for element in BLOCKS %}
+                            <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                            </select>
+                </li>
+
+                    <li>
+                    <label>Введите количество нужных вопросов из данного блока: </label>
+                    <input type="text" name="amount" />
+                    <span class="hint">Например: 4</span>
+                </li>
+                    <li>
+                    <input type="submit" value="Отправить">
+                </li>
+                </ul>
+            </form>
+        </div>
 </body>
 </html>

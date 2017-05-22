@@ -8,6 +8,9 @@
 <body>
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,9 +50,14 @@
     </li>
   </ul>
 </nav>
-<p>Вопросы успешно загружены в форму: {{ form_name }}<br>Вот список вопросов, который сейчас находятся в этой анкете:</p>
-{% for el in qs_list %}
-    <p>{{ el }}</p>
+<div class="main_text">
+    <p class="header">Вопросы добавлен</p>
+<p class="bases">Вопросы дабавлены в форму: {{ form_name }}. Вот список вопросов, который сейчас находятся в этой анкете:</p>
+<div class="bases_2">
+    {% for el in qs_list %}
+    <p class="bases_1">{{ el }}</p>
 {% endfor %}
+</div>
+</div>
 </body>
 </html>

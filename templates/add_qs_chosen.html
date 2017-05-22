@@ -8,6 +8,9 @@
 <body>
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,22 +50,31 @@
     </li>
   </ul>
 </nav>
-<form action="/add_qs_chosen_result">
-    <label><b>Выберете анкету, в которую хотите добавить вопросы: </b>
-        <select name="form_name">
-            {% for element in TABLES %}
-                <option value="{{ element }}">{{ element }}</option>
-            {% endfor %}
-        </select>
-    </label><br>
-    <label><b>Выберете вопрос, который хотите добавить:</b>
-        <select name="qs">
-            {% for element in QS %}
-                <option value="{{ element }}">{{ element }}</option>
-            {% endfor %}
-        </select>
-    </label><br>
-    <p><input type="submit" value="Отправить"></p>
-</form>
+<div class="main_text">
+            <p class="header">Форма для добавления вопросов в анкету</p>
+            <form class="form_1" action="/add_qs_chosen_result">
+                <ul>
+                    <li>
+                    <label>Выберите нужную анкету: </label>
+                            <select name="form_name">
+                            {% for element in TABLES %}
+                            <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                            </select>
+                    </li>
+                <li>
+                    <label>Выберете нужный вопрос: </label>
+                            <select name="qs">
+                            {% for element in QS %}
+                            <option value="{{ element }}">{{ element }}</option>
+                            {% endfor %}
+                            </select>
+                </li>
+                    <li>
+                    <input type="submit" value="Отправить">
+                </li>
+                </ul>
+            </form>
+        </div>
 </body>
 </html>

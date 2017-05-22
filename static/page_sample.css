@@ -1,6 +1,6 @@
 
 body {
-    background-color: #295FCB;
+    background-color: #669bdd;
 }
 
 *, *:before, *:after{
@@ -80,7 +80,7 @@ nav{
     margin-left: 70px;
     margin-right: 70px;
     margin-top: 150px;
-    height: 100vh;
+    height: 200vh;
     font-family: 'Lato', sans-serif;
     font-size: .8em;
 
@@ -103,16 +103,17 @@ nav{
 }
 
 .form_1 label {
-    width: 340px;
+    width: 370px;
     display: inline-block;
     float: left;
-    padding: 3px;
+    padding: 5px;
     letter-spacing: 1px;
     text-decoration: none;
     text-transform: uppercase;
 }
+
 .form_1 input {
-    height: 30px;
+    height: 25px;
     width: 220px;
     padding: 5px 8px;
 }
@@ -140,4 +141,14 @@ nav{
     text-decoration: none;
     text-transform: uppercase;
     text-align: center;
+}
+
+.bases_1{
+    text-decoration: none;
+    text-transform: uppercase;
+    padding-top: 3px;
+}
+.bases_2{
+    padding-left: 20px;
+    padding-top: 20px;
 }

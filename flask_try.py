@@ -638,7 +638,7 @@ def add_qs_chosen():
     form_names = get_tables_names()
     qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs')
     return render_template('add_qs_chosen.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+                           urls_main=urls_main, QS=qs_list)
 
 
 @app.route('/add_qs_chosen_result')

@@ -8,6 +8,9 @@
 <body>
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,6 +50,9 @@
     </li>
   </ul>
 </nav>
-<p>{{ text }}</p>
+<div class="main_text">
+    <p class="header">Ошибка при создании анкеты</p>
+    <p class="bases">Во время процесса создания анкеты произошла оштбка, попробуйте сменить имя.</p>
+    </div>
 </body>
 </html>
