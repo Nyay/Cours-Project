@@ -6,13 +6,63 @@
     <title>Title</title>
 </head>
 <body>
-<div class="main_q">
-<div class="low_q">
-<form action="/check_ans">
-{% for element in List_Q %}
- <label><b>{{ element }}</b><br><input type="text" name="{{ element }}"></label><br>
-{% endfor %}
-<input type="submit" value="Отправить">
+<nav>
+  <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск по ответам</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
+<div class="main_text">
+<form class="form_1" action="/check_ans">
+    <ul>
+    {% for element in List_Q %}
+        <li>
+            <label>{{ element }}</label>
+            <textarea name="{{ element }}" cols="100" rows="5"></textarea>
+            </li>
+    {% endfor %}
+        <li>
+    <input type="submit" value="Отправить">
+        </li>
+        </ul>
 </form>
 </div>
 </div>

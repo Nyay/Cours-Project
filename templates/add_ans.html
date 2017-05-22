@@ -1,9 +1,9 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <title>Корреспондент добален!</title>
+                <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
     <meta charset="UTF-8">
-            <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
-    <title>Title</title>
 </head>
 <body>
 <nav>
@@ -51,18 +51,8 @@
   </ul>
 </nav>
 <div class="main_text">
-<form class="form_1" action="/add_ans">
-    <ul>
-        {% for el in memory %}
-        <li>
-            <p>{{ memory[el][1] }}</p> Ответ: <p>{{ memory[el][0] }}</p>
-        </li>
-        {% endfor %}
-        <li>
-        <input type="submit" value="Отправить">
-        </li>
-    </ul>
-</form>
+    <p class="header">Ответы записаны</p>
+<p class="bases">Ответы записаны в базу данных. Можете перейти к экспорту или пройти другую анкету</p>
 </div>
 </body>
 </html>
