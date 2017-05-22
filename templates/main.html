@@ -3,10 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
-    <title>Title</title>
+    <title>Главная</title>
 </head>
 <body>
-<nav>
+<div>
+    <nav>
   <ul class="menu">
       {% for name, url in urls_main.items() %}
       <li><a href="{{ url }}" class="active">{{ name }}</a>
@@ -50,8 +51,9 @@
     </li>
   </ul>
 </nav>
+</div>
 <div class="main_text">
     <p>test</p>
-</div>>
+</div>
 </body>
 </html>

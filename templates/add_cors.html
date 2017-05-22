@@ -2,12 +2,15 @@
 <html lang="en">
 <head>
     <title></title>
-                <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
     <meta charset="UTF-8">
 </head>
 <body>
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,24 +50,41 @@
     </li>
   </ul>
 </nav>
-        <div class="main_q">
-        <div class="low_q">
-            <form action="/add_cors_fin">
-            <label><b>ФИО корисподента: </b><input type="text" name="name"></label><br>
-            <label><b>Возраст корисподента: </b><input type="text" name="year"></label><br>
-            <label><b>Город рождения корисподента: </b><input type="text" name="town"></label><br>
-            <label><b>Пол корисподерна: </b>
-                <select name="gender">
-                     <option value="Женский">Женский</option>
-                    <option value="Мужской">Мужской</option>
-                </select>
-            </label><br>
-                <b>Дополнительная информация(Необязательно): </b><br>
-            <label><textarea name="additional_info"></textarea></label>
-            <p><input type="submit" value="Отправить"></p>
+        <div class="main_text">
+            <p class="header">Форма для добавления коррисподента</p>
+            <form class="form_1" action="/add_cors_fin">
+                <ul>
+                <li>
+                    <label>ФИО корисподента:</label>
+                    <input type="text" name="name" />
+                    <span class="hint">Например: Симонян Анна</span>
+                </li>
+                <li>
+                    <label>Возраст корисподента:</label>
+                    <input type="text" name="year" />
+                    <span class="hint">Например: 18</span>
+                </li>
+                <li>
+                    <label>Город рождения корисподента: </label>
+                    <input type="text" name="town" />
+                    <span class="hint">Например: Москва</span>
+                </li>
+                <li>
+                    <label>Пол корисподерна: </label>
+                    <select name="gender">
+                        <option value="Женский">Женский</option>
+                        <option value="Мужской">Мужской</option>
+                    </select>
+                </li>
+                <li>
+                    <label>Дополнительная информация(Необязательно): </label>
+                    <textarea name="additional_info" cols="40" rows="6"></textarea>
+                </li>
+                <li>
+                    <input type="submit" value="Отправить">
+                </li>
+                </ul>
             </form>
         </div>
-        </div>
-
 </body>
 </html>

@@ -1,137 +1,82 @@
 
 body {
-    font-family: Verdana;
-    background-image: url("/static/dHt6LYd.png");
-    font-size:  small;
+    background-color: #295FCB;
             }
-.main_q {
-    margin: 40px;
-         }
-.low_q{
-    background-color: whitesmoke;
-    border-radius:6px;
-    opacity: 0.8;
-    border: 2px solid black;
-         }
-.low2_q{
-    background-color: whitesmoke;
-    border-radius:6px;
-    opacity: 0.8;
-    border: 2px solid black;
-    margin: 40px;
-         }
-.text{
-    margin: 10px;
-         }
 
-a:link, a:visited {
-    background-color: #727172;
-    color: white;
-    padding: 4px 4px;
-    text-align: center;
-    text-decoration: none;
-    display: inline-block;
-    min-width: 200px;
-}
-a:hover, a:active {
-    background-color: #5c5b5c;
+.main_text{
+    background-color: #fff;
+    font-family: 'Lato', sans-serif;
+    margin-left: 70px;
+    margin-right: 70px;
+    margin-top: 120px;
+    height: 100vh;
 }
 
-*{box-sizing: border-box;}
-body{margin:0}
-nav {
-    position: fixed;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height:50px;
+*, *:before, *:after{
+  -webkit-box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  box-sizing: border-box;
+  padding: 0;
+  margin: 0;
+  font-family: 'Lato', sans-serif;
+}
+
+nav{
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  background: #fff;
+  box-shadow: 0 3px 10px -2px rgba(0,0,0,.1);
+  border: 1px solid rgba(0,0,0,.1);
     text-align: center;
     display: inline;
     vertical-align:middle;
-    font-family: 'Open Sans', sans-serif;
+}
+  nav ul{
+    list-style: none;
+    position: relative;
+    display: inline-table;
+  }
+    nav ul li{
+      float: left;
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      transition: all .2s ease-in-out;
+    }
 
-}
-nav:after {
-  content: "";
-  display: table;
-  clear: both;
-}
-ul {
-  margin: 0;
-  padding: 0;
-  list-style: none;
-    opacity: 0.9;
-}
-a {
-  text-decoration: none;
-  transition: .3s linear;
-}
-.menu > li {
-  float: left;
-  position: relative;
-}
-.menu > li:first-child {
-  border-left: 0;
-}
-.menu > li > a {
-  display: block;
-  padding: 20px 30px;
-  font-size: 12px;
-  text-transform: uppercase;
-  color: #FEFDFD;
-  letter-spacing: 2px;
-}
-
-.submenu > li > a {
-  font-size: 5px;
-  text-transform: uppercase;
-  color: #FEFDFD;
-  letter-spacing: 2px;
-}
-.submenu > li >a:hover {
-  color: #669bdd;
-}
-
-.menu > li > a:hover {
-    color: #669bdd;
-}
-
-.menu .fa, .submenu .fa {
-  margin-left: 5px;
-  color: inherit;
-}
-.submenu {
-  position: absolute;
-  background: #5c5b5c;
-  visibility: hidden;
-  opacity: 0;
-  z-index: 10;
-  transform-origin: 0% 0%;
-  transform-style: preserve-3d;
-  transform: rotateX(-90deg);
-  transition: .3s linear;
-    min-width: 200px;
-}
-.submenu li {
-  position: relative;
-}
-.submenu li a {
-  color: #fafafa;
-  display: block;
-  padding: 10px 20px;
-  font-size: 13px;
-}
-.submenu .submenu {
-  position: absolute;
-  left: 100%;
-  top: -1px;
-  transition: .3s linear;
-}
-.submenu li {
-  position: relative;
-}
-li:hover > .submenu {
-  transform: rotateX(0deg);
-  visibility: visible;
-  opacity: 1;
-}
+    nav ul li:hover{background: rgba(0,0,0,.15);}
+    nav ul li:hover > ul{display: block;}
+    nav ul li{
+      float: left;
+      -webkit-transition: all .2s ease-in-out;
+      -moz-transition: all .2s ease-in-out;
+      transition: all .2s ease-in-out;
+    }
+      nav ul li a{
+        display: block;
+        padding: 30px 20px;
+        color: #222;
+        font-size: .9em;
+        letter-spacing: 1px;
+        text-decoration: none;
+        text-transform: uppercase;
+      }
+      nav ul ul{
+        display: none;
+        background: #fff;
+        position: absolute;
+        top: 100%;
+        box-shadow: -3px 3px 10px -2px rgba(0,0,0,.1);
+        border: 1px solid rgba(0,0,0,.1);
+      }
+        nav ul ul li{float: none; position: relative;}
+          nav ul ul li a {
+            padding: 15px 30px;
+            border-bottom: 1px solid rgba(0,0,0,.05);
+          }
+          nav ul ul ul {
+            position: absolute;
+            left: 100%;
+            top:0;
+          }

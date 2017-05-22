@@ -1,11 +1,8 @@
 from flask import Flask, session
 from flask import url_for, render_template, request
 import sqlite3
-import os
 import random
 import csv
-import json
-import conf
 import re
 import os
 
@@ -260,17 +257,67 @@ def main_page_task():
 
 @app.route('/ch_wh_to_add')
 def ch_wh_to_add():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
     NAMES = download_txt_files()
-    return render_template('ch_wh_to_add.html', NAMES = NAMES)
+    return render_template('ch_wh_to_add.html', NAMES = NAMES, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/add_info')
 def add_info():
-    return render_template('add_info.html')
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    return render_template('add_info.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/add_info_manual')
 def add_info_manual():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
@@ -293,12 +340,14 @@ def add_info_manual():
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
     blocks = set(get_column('QS_And_Forms_DB.db', 'QUESTION_BLOCK', 'List_of_qs_try'))
-    return render_template('add_info_manual.html', blocks=blocks, urls=urls, urls_2=urls_2, urls_3=urls_3,
-                           urls_4=urls_4, urls_5=urls_5)
+    return render_template('add_info_manual.html', blocks=blocks, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/add_info_manual_result')
 def add_info_manual_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
@@ -337,16 +386,21 @@ def add_info_manual_result():
     urls_6 = {'Добавить еще один блок вопросов.': url_for('add_info'),
             }
     return render_template('add_to_db.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_6=urls_6)
+                           urls_main=urls_main, urls_6=urls_6)
 
 
 @app.route('/add_to_db')
 def add_to_db():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -370,16 +424,21 @@ def add_to_db():
     urls_6 = {'Добавить еще один блок вопросов.': url_for('add_info'),
             }
     return render_template('add_to_db.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_6=urls_6)
+                           urls_main=urls_main, urls_6=urls_6)
 
 
 @app.route('/crt_form')
 def crt_form():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -393,17 +452,22 @@ def crt_form():
               'Экспорт вопросов': url_for('convert_qs'),
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
-    return render_template('crt_form.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+    return render_template('crt_form.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/crt_form_fnl')
 def crt_form_fnl():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -427,30 +491,27 @@ def crt_form_fnl():
         conn.execute(cmd)
         conn.commit()
         conn.close()
-        return render_template('crt_form_result.html', form_name=form_name, urls=urls, urls_2=urls_2, urls_3=urls_3,
-                               urls_4=urls_4, urls_5=urls_5, urls_6=urls_6)
+        return render_template('crt_form_result.html', form_name=form_name, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main, urls_6=urls_6)
     except sqlite3.OperationalError:
         reply = 'При создании анкеты произошла ошибка, попробуйте другое имя.'
         print('error')
-        return render_template('crt_form_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
-                               urls_5=urls_5, text=reply)
+        return render_template('crt_form_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main, text=reply)
 
 
 @app.route('/add_qs')
 def add_qs():
-    form_names = get_tables_names()
-    block_names = get_block_name('List_of_qs')
-    return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names)
-
-
-@app.route('/add_qs_manual')
-def add_qs_manual():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -465,18 +526,53 @@ def add_qs_manual():
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
     form_names = get_tables_names()
-    return render_template('add_qs_manual.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
-                           urls_4=urls_4, urls_5=urls_5)
+    block_names = get_block_name('List_of_qs')
+    return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
-@app.route('/add_qs_manual_result')
-def add_qs_manual_result():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+@app.route('/add_qs_manual')
+def add_qs_manual():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    form_names = get_tables_names()
+    return render_template('add_qs_manual.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/add_qs_manual_result')
+def add_qs_manual_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -510,18 +606,22 @@ def add_qs_manual_result():
             conn.execute(cmd_add)
             conn.commit()
     qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
-    return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
-                           urls_4=urls_4, urls_5=urls_5, qs_list=qs_list, form_name=form_name)
+    return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main, qs_list=qs_list, form_name=form_name)
 
 
 @app.route('/add_qs_chosen')
 def add_qs_chosen():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -537,18 +637,22 @@ def add_qs_chosen():
               }
     form_names = get_tables_names()
     qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs')
-    return render_template('add_qs_chosen.html', TABLES=form_names, QS=qs_list, urls=urls, urls_2=urls_2, urls_3=urls_3,
-                           urls_4=urls_4, urls_5=urls_5)
+    return render_template('add_qs_chosen.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/add_qs_chosen_result')
 def add_qs_chosen_result():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -585,18 +689,22 @@ def add_qs_chosen_result():
             conn.execute(cmd_add)
             conn.commit()
     qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
-    return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
-                           urls_4=urls_4, urls_5=urls_5, qs_list=qs_list, form_name=form_name)
+    return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main, qs_list=qs_list, form_name=form_name)
 
 
 @app.route('/add_qs_result')
 def add_qs_result():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
-              'Добавить конкретные вопросы в анкету': url_for('add_qs_manual'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -627,156 +735,24 @@ def add_qs_result():
             conn.execute(cmd_add)
             conn.commit()
         qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
-        return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
-                               urls_4=urls_4, urls_5=urls_5, qs_list=qs_list, form_name=form_name)
+        return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main, qs_list=qs_list, form_name=form_name)
     else:
         return render_template('add_qs_error.html')
 
 
 @app.route('/select_form')
 def select_form():
-    tables = get_tables_names()
-    list_of_names = list(group(get_column('cors_info.db', 'name, id', 'cors_info'), 2))
-    print(list_of_names)
-    return render_template('cmp_form.html', TABLES=tables, names=list_of_names)
-
-
-@app.route('/open_form')
-def open_form():
-    form_name = request.args['selected_form']
-    cors_id = request.args['cors_id']
-    session['cid'] = cors_id
-    session['fn'] = form_name
-    list_of_qs = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
-    print(list_of_qs)
-    print(session['fn'])
-    return render_template('open_form.html', List_Q=list_of_qs)
-
-
-@app.route('/check_ans')
-def check_ans():
-    d = {}
-    form_info = list(group(get_column('QS_And_Forms_DB.db', '*', session['fn']), 2))
-    for element in form_info:
-        answers = []
-        ans = request.args[element[1]]
-        answers.append(ans)
-        answers.append(element[1])
-        d[str(element[0])] = answers
-    session['memory'] = d
-    print(session)
-    return render_template('check_ans.html', memory=d)
-
-
-@app.route('/add_ans')
-def add_ans():
-    cors_id = session['cid']
-    info = session['memory']
-    for el in info:
-        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id))
-    return render_template('add_ans.html')
-
-
-@app.route('/search_id')
-def search_id():
-    search_args = set(search_task('ANS_Db.db', 'ALL_ANS', 'QS_ID'))
-    print(search_args)
-    return render_template('search_id.html', info=search_args)
-
-
-@app.route('/search_id_result')
-def search_id_result():
-    q_id = request.args['id']
-    result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'QS_ID', q_id)
-    print(result)
-    result2 = list(group(result, 4))
-    print(result2)
-    return render_template('search_id_result.html', q_id=q_id, result=result2)
-
-
-@app.route('/search_name')
-def search_name():
-    search_args = search_task('cors_info.db', 'cors_info', 'name')
-    print(search_args)
-    return render_template('search_name.html', info=search_args)
-
-
-@app.route('/search_name_result')
-def search_name_result():
-    name = request.args['name']
-    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', name)
-    for el in my_id:
-        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
-    result2 = list(group(result, 4))
-    print(result2)
-    return render_template('search_name_result.html', name=name, result=result2)
-
-
-@app.route('/search_year')
-def search_year():
-    search_args = search_task('cors_info.db', 'cors_info', 'year')
-    print(search_args)
-    return render_template('search_year.html', info=search_args)
-
-
-@app.route('/search_year_result')
-def search_year_result():
-    year = request.args['year']
-    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'year', year)
-    for el in my_id:
-        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
-    result2 = list(group(result, 4))
-    print(result2)
-    return render_template('search_year_result.html', year=year, result=result2)
-
-
-@app.route('/search_town')
-def search_town():
-    search_args = search_task('cors_info.db', 'cors_info', 'town')
-    print(search_args)
-    return render_template('search_town.html', info=search_args)
-
-
-@app.route('/search_town_result')
-def search_town_result():
-    town = request.args['town']
-    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'town', town)
-    for el in my_id:
-        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
-    result2 = list(group(result, 4))
-    print(result2)
-    return render_template('search_town_result.html', town=town, result=result2)
-
-@app.route('/search_gender')
-def search_gender():
-    search_args = search_task('cors_info.db', 'cors_info', 'gender')
-    print(search_args)
-    search_args = set(search_args)
-    return render_template('search_gender.html', info=search_args)
-
-
-@app.route('/search_gender_result')
-def search_gender_result():
-    gender = request.args['gender']
-    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'gender', gender)
-    for el in my_id:
-        result = search_what_by_arg('QS_ID, QS_TXT, ANS_TXT, cors_id', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
-    result2 = list(group(result, 4))
-    print(result2)
-    return render_template('search_gender_result.html', gender=gender, result=result2)
-
-
-@app.route('/add_cors')
-def add_cors():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -790,16 +766,495 @@ def add_cors():
               'Экспорт вопросов': url_for('convert_qs'),
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
-    return render_template('add_cors.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+    tables = get_tables_names()
+    list_of_names = list(group(get_column('cors_info.db', 'name, id', 'cors_info'), 2))
+    print(list_of_names)
+    return render_template('cmp_form.html', TABLES=tables, names=list_of_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/open_form')
+def open_form():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    form_name = request.args['selected_form']
+    cors_id = request.args['cors_id']
+    session['cid'] = cors_id
+    session['fn'] = form_name
+    list_of_qs = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
+    print(list_of_qs)
+    print(session['fn'])
+    return render_template('open_form.html', List_Q=list_of_qs, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/check_ans')
+def check_ans():
+    d = {}
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    form_info = list(group(get_column('QS_And_Forms_DB.db', '*', session['fn']), 2))
+    for element in form_info:
+        answers = []
+        ans = request.args[element[1]]
+        answers.append(ans)
+        answers.append(element[1])
+        d[str(element[0])] = answers
+    session['memory'] = d
+    print(session)
+    return render_template('check_ans.html', memory=d, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/add_ans')
+def add_ans():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    cors_id = session['cid']
+    info = session['memory']
+    for el in info:
+        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id))
+    return render_template('add_ans.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_id')
+def search_id():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    search_args = set(search_task('ANS_Db.db', 'ALL_ANS', 'QS_ID'))
+    print(search_args)
+    return render_template('search_id.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_id_result')
+def search_id_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    q_id = request.args['id']
+    result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'QS_ID', q_id)
+    print(result)
+    result2 = list(group(result, 4))
+    print(result2)
+    return render_template('search_id_result.html', q_id=q_id, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_name')
+def search_name():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    search_args = search_task('cors_info.db', 'cors_info', 'name')
+    print(search_args)
+    return render_template('search_name.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_name_result')
+def search_name_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    name = request.args['name']
+    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', name)
+    for el in my_id:
+        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        print(result)
+    result2 = list(group(result, 4))
+    print(result2)
+    return render_template('search_name_result.html', name=name, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_year')
+def search_year():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    search_args = search_task('cors_info.db', 'cors_info', 'year')
+    print(search_args)
+    return render_template('search_year.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_year_result')
+def search_year_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    year = request.args['year']
+    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'year', year)
+    for el in my_id:
+        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        print(result)
+    result2 = list(group(result, 4))
+    print(result2)
+    return render_template('search_year_result.html', year=year, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_town')
+def search_town():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    search_args = search_task('cors_info.db', 'cors_info', 'town')
+    print(search_args)
+    return render_template('search_town.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_town_result')
+def search_town_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    town = request.args['town']
+    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'town', town)
+    for el in my_id:
+        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        print(result)
+    result2 = list(group(result, 4))
+    print(result2)
+    return render_template('search_town_result.html', town=town, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+@app.route('/search_gender')
+def search_gender():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    search_args = search_task('cors_info.db', 'cors_info', 'gender')
+    print(search_args)
+    search_args = set(search_args)
+    return render_template('search_gender.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/search_gender_result')
+def search_gender_result():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    gender = request.args['gender']
+    my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'gender', gender)
+    for el in my_id:
+        result = search_what_by_arg('QS_ID, QS_TXT, ANS_TXT, cors_id', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        print(result)
+    result2 = list(group(result, 4))
+    print(result2)
+    return render_template('search_gender_result.html', gender=gender, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
+
+
+@app.route('/add_cors')
+def add_cors():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
+            }
+    urls_2 = {'Создать анкету': url_for('crt_form'),
+              'Добавить корисподента': url_for('add_cors'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
+              }
+    urls_3 = {'Пройти готовую анкету': url_for('select_form'),
+              }
+    urls_4 = {'Поиск по id вопроса': url_for('search_id'),
+              'Поиск по имени рс-нт': url_for('search_name'),
+              'Поиск по возрасту рс-нт': url_for('search_year'),
+              'Поиск по городу рс-нта': url_for('search_town'),
+              'Поиск по полу': url_for('search_gender'),
+              }
+    urls_5 = {'Экспорт ответов': url_for('convert_ans'),
+              'Экспорт вопросов': url_for('convert_qs'),
+              'Экспорт кор. инф.': url_for('convert_cons'),
+              }
+    return render_template('add_cors.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/add_cors_fin')
 def add_cors_fin():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -823,16 +1278,21 @@ def add_cors_fin():
     add_info_to_db('cors_info.db', 'cors_info', raw2, str(raw1))
     cors_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', str(name))
     return render_template('add_cors_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           name=name, cors_id=cors_id)
+                           urls_main=urls_main, name=name, cors_id=cors_id)
 
 
 @app.route('/convert_ans')
 def convert_ans():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -848,18 +1308,25 @@ def convert_ans():
               }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-        return render_template('convert_to_csv.html', file_name='output_ans.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv.html', file_name='output_ans.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
     except BaseException:
-        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/convert_qs')
 def convert_qs():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -875,18 +1342,25 @@ def convert_qs():
               }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_qs.csv')
-        return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
     except BaseException:
-        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/convert_cons')
 def convert_cons():
-    urls = {'Добавить вопросы в DB': url_for('add_info'),
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
+    urls = {'Добавить вопросы из файла': url_for('add_info'),
+            'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
               'Добавить корисподента': url_for('add_cors'),
-              'Добавить вопросы в анкету': url_for('add_qs'),
+              'Добавить рандомные вопросы в анкету': url_for('add_qs'),
+              'Добавить новые вопросы вручную': url_for('add_qs_manual'),
+              'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
               }
     urls_3 = {'Пройти готовую анкету': url_for('select_form'),
               }
@@ -902,9 +1376,11 @@ def convert_cons():
               }
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-        return render_template('convert_to_csv.html', file_name='output_cons.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv.html', file_name='output_cons.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
     except BaseException:
-        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 if __name__ == '__main__':
     app.run(debug=True)
