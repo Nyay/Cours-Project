@@ -8,6 +8,9 @@
 <body>
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,7 +50,9 @@
     </li>
   </ul>
 </nav>
-<p>Корреспондент "{{ name }}" добавлен в базу данных. Теперь он доступен для выбора при прохождении анкеты. id
-корисподента: {{ cors_id }}</p>
+<div class="main_text">
+    <p class="header">Корреспондент добавлен</p>
+<p class="bases">Корреспондент "{{ name }}" добавлен в базу данных. Теперь он доступен для выбора при прохождении анкеты.</p>
+</div>
 </body>
 </html>

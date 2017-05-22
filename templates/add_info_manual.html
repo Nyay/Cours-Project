@@ -8,6 +8,9 @@
 <body>
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,23 +50,31 @@
     </li>
   </ul>
 </nav>
-<form action="/add_info_manual_result">
-    <label><b>Выберете блок в который вы хотитк добавить вопросы. </b>
-        <select name="block_name">
-            {% for element in blocks %}
-                <option value="{{ element }}">{{ element }}</option>
-            {% endfor %}
-        </select>
-    </label><br>
-    <label>
-        <b>Введите имя нового блока, если необходимо(в обратном случае оставить пустым) </b><input type="text" name="new_block_name">
-    </label><br>
-        <b>Введите вопросы которые хотите добавить(разделяйте вопросы переносом строки): </b><br>
-    <label>
-        <textarea name="new_qs">
-
-        </textarea></label>
-    <p><input type="submit" value="Отправить"></p>
-</form>
+<div class="main_text">
+            <p class="header">Форма для добавления вопросов в DB</p>
+            <form  class="form_1" action="/add_info_manual_result">
+                <ul>
+                <li>
+                    <label>Выберете блок вопросов: </label>
+                        <select name="block_name">
+                        {% for element in blocks %}
+                        <option value="{{ element }}">{{ element }}</option>
+                        {% endfor %}
+                        </select>
+                </li>
+                    <li>
+                    <label>Введите имя нового блока, если необходимо: </label>
+                    <input type="text" name="new_block_name" />
+                </li>
+                    <li>
+                    <label>Введите вопросы которые хотите добавить(разделяйте вопросы переносом строки): </label>
+                    <textarea name="new_qs" cols="40" rows="6"></textarea>
+                </li>
+                <li>
+                    <input type="submit" value="Отправить">
+                </li>
+                </ul>
+            </form>
+        </div>
 </body>
 </html>

@@ -6,14 +6,67 @@
     <title>Title</title>
 </head>
 <body>
-<div class="main_q">
-    <div class="low_q">
-<form action="/add_to_db">
-<label><b>Выберете txt файл для загрузки </b><input type="file" name="file_name"></label><br>
-<label><b>Введите название блока вопросов: </b><input type="text" name="block_name"></label>
-<p><input type="submit" value="Отправить"></p>
-</form>
-</div>
-    </div>
+<nav>
+  <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск по ответам</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
+<div class="main_text">
+            <p class="header">Форма для добавления вопросов в DB</p>
+            <form  class="form_1" action="/add_to_db">
+                <ul>
+                    <li>
+                    <label>Выберете txt файл для загрузки: </label>
+                    <input type="file" name="file_name" />
+                </li>
+                    <li>
+                    <label>Введите название блока вопросов: </label>
+                    <input type="text" name="block_name" />
+                </li>
+                <li>
+                    <input type="submit" value="Отправить">
+                </li>
+                </ul>
+            </form>
+        </div>
 </body>
 </html>
