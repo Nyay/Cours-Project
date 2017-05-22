@@ -2,13 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <link href="/static/style.css" type="text/css" rel="stylesheet">
+    <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
     <title>Title</title>
 </head>
 <body>
-
 <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -48,6 +50,8 @@
     </li>
   </ul>
 </nav>
-
+<div class="main_text">
+    <p>test</p>
+</div>>
 </body>
 </html>

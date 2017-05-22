@@ -231,6 +231,8 @@ def group(iterable, count):
 
 @app.route('/')
 def main_page_task():
+    urls_main = {'Главная': url_for('main_page_task'),
+        }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
@@ -252,7 +254,8 @@ def main_page_task():
               'Экспорт вопросов': url_for('convert_qs'),
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
-    return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5)
+    return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
+                           urls_main=urls_main)
 
 
 @app.route('/ch_wh_to_add')
