@@ -6,8 +6,11 @@
     <title>Экспорт закончен</title>
 </head>
 <body>
-    <nav>
+<nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -47,6 +50,10 @@
     </li>
   </ul>
 </nav>
-    <p>Экспорт закончен. Результат записан в файл "{{ file_name }}", который находится в папке с программой.</p>
+<div class="main_text">
+    <p class="header">Экспорт выполнен</p>
+    <p class="bases">Результат записан в файл "{{ file_name }}", который находится в папке с программой.</p>
+</div>
+    <
 </body>
 </html>

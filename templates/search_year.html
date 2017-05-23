@@ -2,18 +2,70 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-            <link href="/static/style.css" type="text/css" rel="stylesheet">
+        <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
     <title>Title</title>
 </head>
 <body>
-<div class="low_q">
-<form action="/search_year_result">
-<select name="year">
-    {% for element in info %}
-        <option value="{{ element }}">{{ element }}</option>
-    {% endfor %}
-</select>
-<input type="submit" value="Отправить">
+<nav>
+  <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск по ответам</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
+<div class="main_text">
+        <p class="header">Поиск ответов по возрасту респондента</p>
+<form class="form_1" action="/search_year_result">
+    <ul>
+        <li>
+            <label>Выберите возраст: </label>
+            <select name="year">
+                {% for element in info %}
+                <option value="{{ element }}">{{ element }}</option>
+                {% endfor %}
+            </select>
+        </li>
+        <li>
+            <input type="submit" value="Отправить">
+        </li>
+    </ul>
 </form>
 </div>
 </body>

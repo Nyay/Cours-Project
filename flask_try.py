@@ -972,6 +972,7 @@ def search_name():
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
     search_args = search_task('cors_info.db', 'cors_info', 'name')
+    search_args = set(search_args)
     print(search_args)
     return render_template('search_name.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -979,13 +980,14 @@ def search_name():
 
 @app.route('/search_name_result')
 def search_name_result():
+    result_out = []
     urls_main = {'Главная': url_for('main_page_task'),
         }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
-              'Добавить корисподента': url_for('add_cors'),
+              'Добавить респодента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
               'Добавить новые вопросы вручную': url_for('add_qs_manual'),
               'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
@@ -1007,7 +1009,11 @@ def search_name_result():
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    result2 = list(group(result, 4))
+        if result != []:
+            for el in result:
+                result_out.append(el)
+    print(result_out)
+    result2 = list(group(result_out, 4))
     print(result2)
     return render_template('search_name_result.html', name=name, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -1039,6 +1045,7 @@ def search_year():
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
     search_args = search_task('cors_info.db', 'cors_info', 'year')
+    search_args = set(search_args)
     print(search_args)
     return render_template('search_year.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -1046,13 +1053,14 @@ def search_year():
 
 @app.route('/search_year_result')
 def search_year_result():
+    result_out = []
     urls_main = {'Главная': url_for('main_page_task'),
         }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
-              'Добавить корисподента': url_for('add_cors'),
+              'Добавить респодента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
               'Добавить новые вопросы вручную': url_for('add_qs_manual'),
               'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
@@ -1074,7 +1082,11 @@ def search_year_result():
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    result2 = list(group(result, 4))
+        if result != []:
+            for el in result:
+                result_out.append(el)
+    print(result_out)
+    result2 = list(group(result_out, 4))
     print(result2)
     return render_template('search_year_result.html', year=year, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -1106,6 +1118,7 @@ def search_town():
               'Экспорт кор. инф.': url_for('convert_cons'),
               }
     search_args = search_task('cors_info.db', 'cors_info', 'town')
+    search_args = set(search_args)
     print(search_args)
     return render_template('search_town.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -1113,13 +1126,14 @@ def search_town():
 
 @app.route('/search_town_result')
 def search_town_result():
+    result_out = []
     urls_main = {'Главная': url_for('main_page_task'),
         }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
-              'Добавить корисподента': url_for('add_cors'),
+              'Добавить респодента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
               'Добавить новые вопросы вручную': url_for('add_qs_manual'),
               'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
@@ -1141,7 +1155,11 @@ def search_town_result():
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    result2 = list(group(result, 4))
+        if result != []:
+            for el in result:
+                result_out.append(el)
+    print(result_out)
+    result2 = list(group(result_out, 4))
     print(result2)
     return render_template('search_town_result.html', town=town, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -1180,13 +1198,14 @@ def search_gender():
 
 @app.route('/search_gender_result')
 def search_gender_result():
+    result_out = []
     urls_main = {'Главная': url_for('main_page_task'),
         }
     urls = {'Добавить вопросы из файла': url_for('add_info'),
             'Добавить вопросы вручную': url_for('add_info_manual'),
             }
     urls_2 = {'Создать анкету': url_for('crt_form'),
-              'Добавить корисподента': url_for('add_cors'),
+              'Добавить респодента': url_for('add_cors'),
               'Добавить рандомные вопросы в анкету': url_for('add_qs'),
               'Добавить новые вопросы вручную': url_for('add_qs_manual'),
               'Добавить готовые вопросы вручную': url_for('add_qs_chosen'),
@@ -1206,10 +1225,18 @@ def search_gender_result():
     gender = request.args['gender']
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'gender', gender)
     for el in my_id:
-        result = search_what_by_arg('QS_ID, QS_TXT, ANS_TXT, cors_id', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
+        result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
         print(result)
-    result2 = list(group(result, 4))
+        if result != []:
+            for el in result:
+                result_out.append(el)
+    print(result_out)
+    result2 = list(group(result_out, 4))
     print(result2)
+    if gender == 'Мужской':
+        gender = 'Мужского'
+    else:
+        gender = 'Женского'
     return render_template('search_gender_result.html', gender=gender, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
 
