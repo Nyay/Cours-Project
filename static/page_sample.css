@@ -3,6 +3,10 @@ body {
     background-color: #669bdd;
 }
 
+ul {
+    background-color: #fff;
+}
+
 *, *:before, *:after{
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
@@ -170,4 +174,7 @@ nav{
     border-collapse: collapse;
     background-color: #fff;
     color: #3E4347;
+}
+.form_cmp{
+    background-color: #ffffff;
 }

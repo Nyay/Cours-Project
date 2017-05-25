@@ -51,6 +51,7 @@
   </ul>
 </nav>
 <div class="main_text">
+    <p class="header">Форма для выбора анкеты</p>
 <form class="form_1" action="/open_form">
     <ul>
         <li>
@@ -62,7 +63,7 @@
             </select>
         </li>
         <li>
-            <label>Выберете корисподента: </label>
+            <label>Выберете респондент: </label>
             <select name="cors_id">
                 {% for element in names %}
                 <option value="{{ element[1] }}">{{ element[0] }} id: {{ element[1] }}</option>
