@@ -8,6 +8,9 @@
 <body>
     <nav>
   <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
     <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
       <ul class="submenu">
           {% for name, url in urls.items() %}
@@ -29,7 +32,7 @@
             {% endfor %}
             </li>
         </ul>
-        <li><a href="" class="avtive">Поиск по ответам</a>
+        <li><a href="" class="avtive">Поиск ответов</a>
         <ul class="submenu">
             {% for name, url in urls_4.items() %}
             <li><a href="{{ url }}">{{ name }}</a>
