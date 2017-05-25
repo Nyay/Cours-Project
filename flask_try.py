@@ -434,7 +434,8 @@ def add_qs_result():
         return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                                urls_5=urls_5, urls_main=urls_main, qs_list=qs_list, form_name=form_name)
     else:
-        return render_template('add_qs_error.html')
+        return render_template('add_qs_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                               urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/select_form')

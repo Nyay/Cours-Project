@@ -2,9 +2,57 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
+    <title>Ошибка процесса</title>
 </head>
 <body>
-
+    <nav>
+  <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск ответов</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
+    <div class="main_text">
+        <p class="header">Процесс прерван</p>
+        <p class="bases">Во время процесса добавления вопросов, возникла ошибка. Количество вопрос в блоке недостаточно.</p>
+    </div>
 </body>
 </html>
