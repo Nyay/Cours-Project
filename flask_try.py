@@ -221,14 +221,22 @@ def search_what_by_arg(what, db, table, wtf, arg):
     return search_result
 
 
-def export_to_csv(db, table, csv_name):
+def export_to_csv(db, table, csv_name, argument):
     with sqlite3.connect(db) as connection:
+        arg = argument
         csvWriter = csv.writer(open(csv_name, "w"),  delimiter='\t', quotechar='|', quoting=csv.QUOTE_MINIMAL)
         c = connection.cursor()
         cmd = 'SELECT * FROM ' + str(table)
         c.execute(cmd)
         rows = c.fetchall()
-        csvWriter.writerow(['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента'])
+        if arg == 'resp_info':
+            row = ['ID респондента', 'ФИО респондента', 'Город рождения респондента', 'Пол респондента',
+                             'Дополнительная информаци']
+        elif arg == 'reply':
+            row = ['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента']
+        elif arg == 'qs':
+            row = ['ID Вопроса', 'Текст вопроса', 'Блок вопросов']
+        csvWriter.writerow(row)
         csvWriter.writerows(rows)
 
 
@@ -636,7 +644,7 @@ def add_cors_fin():
 @app.route('/convert_ans')
 def convert_ans():
     try:
-        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
+        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv', 'reply')
         return render_template('convert_to_csv.html', file_name='output_ans.csv', urls=urls, urls_2=urls_2,
                                urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
     except BaseException:
@@ -647,7 +655,7 @@ def convert_ans():
 @app.route('/convert_qs')
 def convert_qs():
     try:
-        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_qs.csv')
+        export_to_csv('QS_And_Forms_DB.db', 'List_of_qs', 'output_qs.csv', 'qs')
         return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2,
                                urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
     except BaseException:
@@ -658,7 +666,7 @@ def convert_qs():
 @app.route('/convert_cons')
 def convert_cons():
     try:
-        export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
+        export_to_csv('cors_info.db', 'cors_info', 'output_resp_info.csv', 'resp_info')
         return render_template('convert_to_csv.html', file_name='output_cons.csv', urls=urls, urls_2=urls_2,
                                urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
     except BaseException:
