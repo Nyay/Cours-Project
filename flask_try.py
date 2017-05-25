@@ -165,15 +165,17 @@ def get_block_qs_amount(TABLE_NAME, arg):
     return len(qs_list)
 
 
-def add_ans_fnc(qs_id, qs_txt, ans_txt, cors_txt):
+def add_ans_fnc(qs_id, qs_txt, ans_txt, cors_txt, comments):
     conn = sqlite3.connect('ANS_DB.db')
     try:
-        cmd = 'CREATE TABLE ALL_ANS (QS_ID   INTEGER NOT NULL , QS_TXT   TEXT   NOT NULL, ANS_TXT TEXT NOT NULL)'
+        cmd = 'CREATE TABLE ALL_ANS (QS_ID   INTEGER NOT NULL , QS_TXT   TEXT   NOT NULL, ANS_TXT TEXT NOT NULL,' \
+              ' cors_id   INTEGER NOT NULL, comments   TEXT   NOT NULL)'
         conn.execute(cmd)
     except sqlite3.OperationalError:
         print('        table exist         ')
-    cmd = "INSERT INTO ALL_ANS (QS_ID, QS_TXT, ANS_TXT, cors_id) VALUES ('" +\
-          str(qs_id) + "','" + str(qs_txt) + "','" + str(ans_txt) + "','" + str(cors_txt) + "');"
+    cmd = "INSERT INTO ALL_ANS (QS_ID, QS_TXT, ANS_TXT, cors_id, comments) VALUES ('" +\
+          str(qs_id) + "','" + str(qs_txt) + "','" + str(ans_txt) + "','" + str(cors_txt) +\
+          "','" + str(comments) + "');"
     conn.execute(cmd)
     conn.commit()
     conn.close()
@@ -233,7 +235,7 @@ def export_to_csv(db, table, csv_name, argument):
             row = ['ID респондента', 'ФИО респондента', 'Город рождения респондента', 'Пол респондента',
                              'Дополнительная информаци']
         elif arg == 'reply':
-            row = ['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента']
+            row = ['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента', 'Комментарий пользователя']
         elif arg == 'qs':
             row = ['ID Вопроса', 'Текст вопроса', 'Блок вопросов']
         csvWriter.writerow(row)
@@ -482,10 +484,14 @@ def check_ans():
 
 @app.route('/add_ans')
 def add_ans():
+    i = 0
     cors_id = session['cid']
     info = session['memory']
     for el in info:
-        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id))
+        comment_id = 'comments' + str(el)
+        comments = request.args[str(comment_id)]
+        add_ans_fnc(str(el), str(info[el][1]), str(info[el][0]), str(cors_id), str(comments))
+        i += 1
     return render_template('add_ans.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
 
@@ -503,7 +509,7 @@ def search_id_result():
     q_id = request.args['id']
     result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'QS_ID', q_id)
     print(result)
-    result2 = list(group(result, 4))
+    result2 = list(group(result, 5))
     print(result2)
     return render_template('search_id_result.html', q_id=q_id, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
@@ -530,7 +536,7 @@ def search_name_result():
             for el in result:
                 result_out.append(el)
     print(result_out)
-    result2 = list(group(result_out, 4))
+    result2 = list(group(result_out, 5))
     print(result2)
     return render_template('search_name_result.html', name=name, result=result2, urls=urls, urls_2=urls_2,
                            urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
@@ -557,7 +563,7 @@ def search_year_result():
             for el in result:
                 result_out.append(el)
     print(result_out)
-    result2 = list(group(result_out, 4))
+    result2 = list(group(result_out, 5))
     print(result2)
     return render_template('search_year_result.html', year=year, result=result2, urls=urls, urls_2=urls_2,
                            urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
@@ -584,7 +590,7 @@ def search_town_result():
             for el in result:
                 result_out.append(el)
     print(result_out)
-    result2 = list(group(result_out, 4))
+    result2 = list(group(result_out, 5))
     print(result2)
     return render_template('search_town_result.html', town=town, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
@@ -610,7 +616,7 @@ def search_gender_result():
             for el in result:
                 result_out.append(el)
     print(result_out)
-    result2 = list(group(result_out, 4))
+    result2 = list(group(result_out, 5))
     print(result2)
     if gender == 'Мужской':
         gender = 'Мужского'

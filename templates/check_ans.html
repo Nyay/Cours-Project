@@ -55,7 +55,7 @@
     <ul>
         {% for el in memory %}
         <li>
-            <p>{{ memory[el][1] }}</p> Ответ: <p>{{ memory[el][0] }}</p>
+            <p>{{ memory[el][1] }}</p> Ответ: <p>{{ memory[el][0] }}</p><br><textarea placeholder="Комментарий пользователя" name="comments{{ el }}" cols="30" rows="4"></textarea>
         </li>
         {% endfor %}
         <li>
