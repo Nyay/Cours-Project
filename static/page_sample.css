@@ -178,3 +178,13 @@ nav{
 .form_cmp{
     background-color: #ffffff;
 }
+
+.instruction{
+    font-size: medium;
+    text-align: justify;
+    padding-left: 35px;
+    padding-top: 15px;
+    padding-right: 35px;
+}
+.high_instruction{
+}

@@ -13,14 +13,14 @@ app.secret_key = key
 
 urls_main = {'Главная': 'http://127.0.0.1:5000/',
              }
-urls = {'Добавить вопросы из файла': 'http://127.0.0.1:5000/add_info',
-        'Добавить вопросы вручную': 'http://127.0.0.1:5000/add_info_manual'
+urls = {'Загрузить вопросы из файла': 'http://127.0.0.1:5000/add_info',
+        'Загрузить вопросы вручную': 'http://127.0.0.1:5000/add_info_manual'
         }
 urls_2 = {'Создать анкету': 'http://127.0.0.1:5000/crt_form',
           'Добавить респондента': 'http://127.0.0.1:5000/add_cors',
           'Добавить рандомные вопросы в анкету': 'http://127.0.0.1:5000/add_qs',
-          'Добавить новые вопросы вручную': 'http://127.0.0.1:5000/add_qs_manual',
-          'Добавить готовые вопросы вручную': 'http://127.0.0.1:5000/add_qs_chosen',
+          'Добавить новые вопросы в анкету': 'http://127.0.0.1:5000/add_qs_manual',
+          'Добавить конкретные вопросы в анкету': 'http://127.0.0.1:5000/add_qs_chosen',
           }
 urls_3 = {'Пройти готовую анкету': 'http://127.0.0.1:5000/select_form',
           }
@@ -258,8 +258,8 @@ def add_info():
 @app.route('/add_info_manual')
 def add_info_manual():
     blocks = set(get_column('QS_And_Forms_DB.db', 'QUESTION_BLOCK', 'List_of_qs'))
-    return render_template('add_info_manual.html', blocks=blocks, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('add_info_manual.html', blocks=blocks, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/add_info_manual_result')
@@ -317,28 +317,28 @@ def crt_form_fnl():
         conn.execute(cmd)
         conn.commit()
         conn.close()
-        return render_template('crt_form_result.html', form_name=form_name, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main, urls_6=urls_6)
+        return render_template('crt_form_result.html', form_name=form_name, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                               urls_4=urls_4, urls_5=urls_5, urls_main=urls_main, urls_6=urls_6)
     except sqlite3.OperationalError:
         reply = 'При создании анкеты произошла ошибка, попробуйте другое имя.'
         print('error')
-        return render_template('crt_form_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main, text=reply)
+        return render_template('crt_form_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                               urls_5=urls_5, urls_main=urls_main, text=reply)
 
 
 @app.route('/add_qs')
 def add_qs():
     form_names = get_tables_names()
     block_names = get_block_name('List_of_qs')
-    return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names, urls=urls, urls_2=urls_2,
+                           urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/add_qs_manual')
 def add_qs_manual():
     form_names = get_tables_names()
-    return render_template('add_qs_manual.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('add_qs_manual.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/add_qs_manual_result')
@@ -371,8 +371,8 @@ def add_qs_manual_result():
 def add_qs_chosen():
     form_names = get_tables_names()
     qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs')
-    return render_template('add_qs_chosen.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main, QS=qs_list)
+    return render_template('add_qs_chosen.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, urls_main=urls_main, QS=qs_list)
 
 
 @app.route('/add_qs_chosen_result')
@@ -423,8 +423,8 @@ def add_qs_result():
             conn.execute(cmd_add)
             conn.commit()
         qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
-        return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main, qs_list=qs_list, form_name=form_name)
+        return render_template('add_qs_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                               urls_5=urls_5, urls_main=urls_main, qs_list=qs_list, form_name=form_name)
     else:
         return render_template('add_qs_error.html')
 
@@ -496,8 +496,8 @@ def search_id_result():
     print(result)
     result2 = list(group(result, 4))
     print(result2)
-    return render_template('search_id_result.html', q_id=q_id, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_id_result.html', q_id=q_id, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_name')
@@ -505,8 +505,8 @@ def search_name():
     search_args = search_task('cors_info.db', 'cors_info', 'name')
     search_args = set(search_args)
     print(search_args)
-    return render_template('search_name.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_name.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                           urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_name_result')
@@ -523,8 +523,8 @@ def search_name_result():
     print(result_out)
     result2 = list(group(result_out, 4))
     print(result2)
-    return render_template('search_name_result.html', name=name, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_name_result.html', name=name, result=result2, urls=urls, urls_2=urls_2,
+                           urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_year')
@@ -532,8 +532,8 @@ def search_year():
     search_args = search_task('cors_info.db', 'cors_info', 'year')
     search_args = set(search_args)
     print(search_args)
-    return render_template('search_year.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_year.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                           urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_year_result')
@@ -550,8 +550,8 @@ def search_year_result():
     print(result_out)
     result2 = list(group(result_out, 4))
     print(result2)
-    return render_template('search_year_result.html', year=year, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_year_result.html', year=year, result=result2, urls=urls, urls_2=urls_2,
+                           urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_town')
@@ -559,8 +559,8 @@ def search_town():
     search_args = search_task('cors_info.db', 'cors_info', 'town')
     search_args = set(search_args)
     print(search_args)
-    return render_template('search_town.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_town.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                           urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_town_result')
@@ -585,8 +585,8 @@ def search_gender():
     search_args = search_task('cors_info.db', 'cors_info', 'gender')
     print(search_args)
     search_args = set(search_args)
-    return render_template('search_gender.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_gender.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/search_gender_result')
@@ -607,8 +607,8 @@ def search_gender_result():
         gender = 'Мужского'
     else:
         gender = 'Женского'
-    return render_template('search_gender_result.html', gender=gender, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+    return render_template('search_gender_result.html', gender=gender, result=result2, urls=urls, urls_2=urls_2,
+                           urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/add_cors')
@@ -624,34 +624,35 @@ def add_cors_fin():
     gender = request.args['gender']
     town = request.args['town']
     additional_info = request.args['additional_info']
-    raw1 = "'" + str(name) + "','" + str(year) + "','" + str(town) + "','" + str(gender) + "','" + str(additional_info) + "'"
+    raw1 = "'" + str(name) + "','" + str(year) + "','" + str(town) + "','" + str(gender) + "','" +\
+           str(additional_info) + "'"
     raw2 = 'name, year, town, gender, additional_info'
     add_info_to_db('cors_info.db', 'cors_info', raw2, str(raw1))
     cors_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', str(name))
-    return render_template('add_resp_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main, name=name, cors_id=cors_id)
+    return render_template('add_resp_result.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                           urls_5=urls_5, urls_main=urls_main, name=name, cors_id=cors_id)
 
 
 @app.route('/convert_ans')
 def convert_ans():
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_ans.csv')
-        return render_template('convert_to_csv.html', file_name='output_ans.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+        return render_template('convert_to_csv.html', file_name='output_ans.csv', urls=urls, urls_2=urls_2,
+                               urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
     except BaseException:
-        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                               urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/convert_qs')
 def convert_qs():
     try:
         export_to_csv('ANS_DB.db', 'ALL_ANS', 'output_qs.csv')
-        return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+        return render_template('convert_to_csv.html', file_name='output_qs.csv', urls=urls, urls_2=urls_2,
+                               urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
     except BaseException:
-        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
-                           urls_main=urls_main)
+        return render_template('convert_to_csv_error.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
+                               urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/convert_cons')
