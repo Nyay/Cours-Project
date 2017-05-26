@@ -185,24 +185,10 @@ def search_task(db, table, uprise):
     search_result = []
     conn = sqlite3.connect(db)
     cursor = conn.cursor()
-    CMD = 'SELECT ' + str(uprise) + ' FROM ' + str(table)
-    cursor.execute(CMD)
+    cmd = 'SELECT ' + str(uprise) + ' FROM ' + str(table)
+    cursor.execute(cmd)
     search_taple = cursor.fetchall()
     for element in search_taple:
-        for el in element:
-            search_result.append(el)
-    conn.close()
-    return search_result
-
-
-def search_task_where(db, table, uprise, what_in):
-    search_result = []
-    conn = sqlite3.connect(db)
-    cursor = conn.cursor()
-    cmd = 'SELECT * FROM ' + str(table) + ' WHERE ' + str(uprise) + ' = ' + str(what_in)
-    cursor.execute(cmd)
-    search_table = cursor.fetchall()
-    for element in search_table:
         for el in element:
             search_result.append(el)
     conn.close()
