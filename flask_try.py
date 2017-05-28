@@ -263,7 +263,6 @@ def add_info_manual_result():
     block_name = request.args['block_name']
     new_block_name = request.args['new_block_name']
     new_block_name = re.sub(' ', '_', new_block_name)
-    print(new_block_name)
     new_qs = request.args['new_qs']
     new_qs = new_qs.split('\r\n')
     if '        ' in new_qs:
@@ -380,11 +379,7 @@ def add_qs_chosen_result():
     cursor = conn.cursor()
     cursor.execute(cmd)
     group_of_items = cursor.fetchall()
-    print(len(group_of_items))
     if len(group_of_items) > 1:
-        print(group_of_items[0])
-        print(group_of_items[0][0])
-        print(group_of_items[0][1])
         cmd_add = 'INSERT INTO ' + str(form_name) + ' (QUESTION_ID, QUESTION_TEXT) VALUES (' + \
                   "'" + str(group_of_items[0][0]) + "','" + str(group_of_items[0][1]) + "'" + ');'
         conn.execute(cmd_add)
@@ -429,10 +424,8 @@ def add_qs_result():
 @app.route('/select_form')
 def select_form():
     tables = get_tables_names()
-    print(tables)
     tables.remove('List_of_qs')
     list_of_names = list(group(get_column('cors_info.db', 'name, id', 'cors_info'), 2))
-    print(list_of_names)
     return render_template('cmp_form.html', TABLES=tables, names=list_of_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
@@ -444,8 +437,6 @@ def open_form():
     session['cid'] = cors_id
     session['fn'] = form_name
     list_of_qs = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', form_name)
-    print(list_of_qs)
-    print(session['fn'])
     return render_template('open_form.html', List_Q=list_of_qs, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                            urls_5=urls_5, urls_main=urls_main)
 
@@ -457,13 +448,10 @@ def check_ans():
     for element in form_info:
         answers = []
         ans = request.args[element[1]]
-        print(ans)
         answers.append(ans)
         answers.append(element[1])
-        print(answers)
         d[str(element[0])] = answers
     session['memory'] = d
-    print(session)
     return render_template('check_ans.html', memory=d, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                            urls_5=urls_5, urls_main=urls_main)
 
@@ -485,7 +473,6 @@ def add_ans():
 @app.route('/search_id')
 def search_id():
     search_args = set(search_task('ANS_Db.db', 'ALL_ANS', 'QS_ID'))
-    print(search_args)
     return render_template('search_id.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                            urls_5=urls_5, urls_main=urls_main)
 
@@ -494,9 +481,7 @@ def search_id():
 def search_id_result():
     q_id = request.args['id']
     result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'QS_ID', q_id)
-    print(result)
     result2 = list(group(result, 5))
-    print(result2)
     return render_template('search_id_result.html', q_id=q_id, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
@@ -505,7 +490,6 @@ def search_id_result():
 def search_name():
     search_args = search_task('cors_info.db', 'cors_info', 'name')
     search_args = set(search_args)
-    print(search_args)
     return render_template('search_name.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                            urls_5=urls_5, urls_main=urls_main)
 
@@ -517,13 +501,10 @@ def search_name_result():
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'name', name)
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
         if result != []:
             for el in result:
                 result_out.append(el)
-    print(result_out)
     result2 = list(group(result_out, 5))
-    print(result2)
     return render_template('search_name_result.html', name=name, result=result2, urls=urls, urls_2=urls_2,
                            urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
@@ -532,7 +513,6 @@ def search_name_result():
 def search_year():
     search_args = search_task('cors_info.db', 'cors_info', 'year')
     search_args = set(search_args)
-    print(search_args)
     return render_template('search_year.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                            urls_5=urls_5, urls_main=urls_main)
 
@@ -544,13 +524,10 @@ def search_year_result():
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'year', year)
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
         if result != []:
             for el in result:
                 result_out.append(el)
-    print(result_out)
     result2 = list(group(result_out, 5))
-    print(result2)
     return render_template('search_year_result.html', year=year, result=result2, urls=urls, urls_2=urls_2,
                            urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
@@ -559,7 +536,6 @@ def search_year_result():
 def search_town():
     search_args = search_task('cors_info.db', 'cors_info', 'town')
     search_args = set(search_args)
-    print(search_args)
     return render_template('search_town.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
                            urls_5=urls_5, urls_main=urls_main)
 
@@ -571,20 +547,16 @@ def search_town_result():
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'town', town)
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
         if result != []:
             for el in result:
                 result_out.append(el)
-    print(result_out)
     result2 = list(group(result_out, 5))
-    print(result2)
     return render_template('search_town_result.html', town=town, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
 
 @app.route('/search_gender')
 def search_gender():
     search_args = search_task('cors_info.db', 'cors_info', 'gender')
-    print(search_args)
     search_args = set(search_args)
     return render_template('search_gender.html', info=search_args, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
@@ -597,13 +569,10 @@ def search_gender_result():
     my_id = search_what_by_arg('id', 'cors_info.db', 'cors_info', 'gender', gender)
     for el in my_id:
         result = search_what_by_arg('*', 'ANS_DB.db', 'ALL_ANS', 'cors_id', el)
-        print(result)
         if result != []:
             for el in result:
                 result_out.append(el)
-    print(result_out)
     result2 = list(group(result_out, 5))
-    print(result2)
     if gender == 'Мужской':
         gender = 'Мужского'
     else:
