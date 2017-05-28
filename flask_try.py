@@ -324,6 +324,8 @@ def crt_form_fnl():
 @app.route('/add_qs')
 def add_qs():
     form_names = get_tables_names()
+    form_names.remove('List_of_qs')
+    form_names.remove('sqlite_sequence')
     block_names = get_block_name('List_of_qs')
     return render_template('add_qs.html', TABLES=form_names, BLOCKS=block_names, urls=urls, urls_2=urls_2,
                            urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
@@ -332,6 +334,8 @@ def add_qs():
 @app.route('/add_qs_manual')
 def add_qs_manual():
     form_names = get_tables_names()
+    form_names.remove('List_of_qs')
+    form_names.remove('sqlite_sequence')
     return render_template('add_qs_manual.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
@@ -365,6 +369,8 @@ def add_qs_manual_result():
 @app.route('/add_qs_chosen')
 def add_qs_chosen():
     form_names = get_tables_names()
+    form_names.remove('List_of_qs')
+    form_names.remove('sqlite_sequence')
     qs_list = get_column('QS_And_Forms_DB.db', 'QUESTION_TEXT', 'List_of_qs')
     return render_template('add_qs_chosen.html', TABLES=form_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main, QS=qs_list)
@@ -425,6 +431,7 @@ def add_qs_result():
 def select_form():
     tables = get_tables_names()
     tables.remove('List_of_qs')
+    tables.remove('sqlite_sequence')
     list_of_names = list(group(get_column('cors_info.db', 'name, id', 'cors_info'), 2))
     return render_template('cmp_form.html', TABLES=tables, names=list_of_names, urls=urls, urls_2=urls_2, urls_3=urls_3,
                            urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
@@ -553,6 +560,7 @@ def search_town_result():
     result2 = list(group(result_out, 5))
     return render_template('search_town_result.html', town=town, result=result2, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
+
 
 @app.route('/search_gender')
 def search_gender():
