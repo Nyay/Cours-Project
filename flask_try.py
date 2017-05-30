@@ -29,6 +29,7 @@ urls_4 = {'Поиск по id вопроса': 'http://127.0.0.1:5000/search_id'
           'Поиск по возрасту рс-нт': 'http://127.0.0.1:5000/search_year',
           'Поиск по городу рс-нта': 'http://127.0.0.1:5000/search_town',
           'Поиск по полу': 'http://127.0.0.1:5000/search_gender',
+          'Поиск вхождения в ответах': 'http://127.0.0.1:5000/search_reply',
           }
 urls_5 = {'Экспорт ответов': 'http://127.0.0.1:5000/convert_ans',
           'Экспорт вопросов': 'http://127.0.0.1:5000/convert_qs',
@@ -84,7 +85,8 @@ def create_table_qs(table_name):
 def create_table_forms(table_name):     # Создание таблицы для форм
     try:
         conn = sqlite3.connect('QS_And_Forms_DB.db')
-        cmd = 'CREATE TABLE ' + table_name + ' (QUESTION_ID   INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT, QUESTION_TEXT   TEXT   NOT NULL,)'
+        cmd = 'CREATE TABLE ' + table_name + ' (QUESTION_ID   INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,' \
+                                             ' QUESTION_TEXT   TEXT   NOT NULL,)'
         conn.execute(cmd)
         conn.commit()
         conn.close()
@@ -95,7 +97,8 @@ def create_table_forms(table_name):     # Создание таблицы для
 def insert_task_qs(QT, TABLE_NAME, BLOCK_NAME):
     for element in QT:
         conn = sqlite3.connect('QS_And_Forms_DB.db')
-        COMMAND = 'INSERT INTO ' + TABLE_NAME + ' (QUESTION_TEXT, QUESTION_BLOCK) VALUES (' + "'" + element + "','" + BLOCK_NAME + "'" +');'
+        COMMAND = 'INSERT INTO ' + TABLE_NAME + ' (QUESTION_TEXT, QUESTION_BLOCK) VALUES (' + "'" + element + "','" +\
+                  BLOCK_NAME + "'" +');'
         conn.execute(COMMAND)
         conn.commit()
         conn.close()
@@ -103,7 +106,8 @@ def insert_task_qs(QT, TABLE_NAME, BLOCK_NAME):
 
 def insert_task_qs_2(QT, TABLE_NAME, BLOCK_NAME):
     conn = sqlite3.connect('QS_And_Forms_DB.db')
-    сmd = 'INSERT INTO ' + TABLE_NAME + ' (QUESTION_TEXT, QUESTION_BLOCK) VALUES (' + "'" + QT + "','" + BLOCK_NAME + "'" +');'
+    сmd = 'INSERT INTO ' + TABLE_NAME + ' (QUESTION_TEXT, QUESTION_BLOCK) VALUES (' + "'" + QT + "','" + BLOCK_NAME +\
+          "'" +');'
     conn.execute(сmd)
     conn.commit()
     conn.close()
@@ -219,7 +223,7 @@ def export_to_csv(db, table, csv_name, argument):
         rows = c.fetchall()
         if arg == 'resp_info':
             row = ['ID респондента', 'ФИО респондента', 'Город рождения респондента', 'Пол респондента',
-                             'Дополнительная информаци']
+                   'Дополнительная информаци']
         elif arg == 'reply':
             row = ['ID Вопроса', 'Текст вопроса', 'Ответ респодента', 'ID респодента', 'Комментарий пользователя']
         elif arg == 'qs':
@@ -236,13 +240,6 @@ def group(iterable, count):
 def main_page_task():
     return render_template('main.html', urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4, urls_5=urls_5,
                            urls_main=urls_main)
-
-
-@app.route('/ch_wh_to_add')
-def ch_wh_to_add():
-    NAMES = download_txt_files()
-    return render_template('ch_wh_to_add.html', NAMES=NAMES, urls=urls, urls_2=urls_2, urls_3=urls_3, urls_4=urls_4,
-                           urls_5=urls_5, urls_main=urls_main)
 
 
 @app.route('/add_info')
@@ -586,6 +583,38 @@ def search_gender_result():
     else:
         gender = 'Женского'
     return render_template('search_gender_result.html', gender=gender, result=result2, urls=urls, urls_2=urls_2,
+                           urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
+
+
+@app.route('/search_reply')
+def search_reply():
+    return render_template('search_reply.html', urls=urls, urls_2=urls_2, urls_3=urls_3,
+                           urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
+
+
+@app.route('/search_reply_result')
+def search_reply_result():
+    result_list = []
+    reply_list = search_task('ANS_DB.db', 'ALL_ANS', 'ANS_TXT')
+    qs_list = search_task('ANS_DB.db', 'ALL_ANS', 'QS_TXT')
+    key_word = request.args['key_word']
+    print(key_word)
+    print(reply_list)
+    i = 0
+    for reply in reply_list:
+        block = []
+        print(reply)
+        reply = reply.lower()
+        words = reply.split()
+        for word in words:
+            if key_word == word:
+                block.append(qs_list[i])
+                block.append(reply)
+                print(block)
+                result_list.append(block)
+        i += 1
+    print(result_list)
+    return render_template('search_reply_result.html', key_word=key_word, result=result_list, urls=urls, urls_2=urls_2,
                            urls_3=urls_3, urls_4=urls_4, urls_5=urls_5, urls_main=urls_main)
 
 

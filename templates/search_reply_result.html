@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+            <link href="/static/page_sample.css" type="text/css" rel="stylesheet">
+    <title>Результат поиска</title>
+</head>
+<body>
+<nav>
+  <ul class="menu">
+      {% for name, url in urls_main.items() %}
+      <li><a href="{{ url }}" class="active">{{ name }}</a>
+      {% endfor %}
+    <li><a href="" class="active">База вопросов<span class="fa fa-angle-down"></span></a>
+      <ul class="submenu">
+          {% for name, url in urls.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+          {% endfor %}
+            </li>
+      </ul>
+    <li><a href="" class="avtive">Управление</a>
+        <ul class="submenu">
+            {% for name, url in urls_2.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Пройти анкету</a>
+        <ul class="submenu">
+            {% for name, url in urls_3.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+        <li><a href="" class="avtive">Поиск ответов</a>
+        <ul class="submenu">
+            {% for name, url in urls_4.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+      <li><a href="" class="avtive">Экспорт в csv</a>
+        <ul class="submenu">
+            {% for name, url in urls_5.items() %}
+            <li><a href="{{ url }}">{{ name }}</a>
+            {% endfor %}
+            </li>
+        </ul>
+  </ul>
+    </li>
+  </ul>
+</nav>
+<div class="main_text">
+<p class="header">Результат поиска по вхождению: {{ key_word }}</p>
+<table class="show_me">
+     <tr>
+        <th>Вопросы:</th>
+        <th>Ответы:</th>
+    </tr>
+    {% for el in result %}
+    <tr>
+        <td>{{ el[0] }}</td>
+        <td>{{ el[1] }}</td>
+    </tr>
+    {% endfor %}
+</table>
+</div>
+</body>
+</html>
